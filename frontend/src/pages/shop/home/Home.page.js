@@ -1,10 +1,10 @@
-import React from 'react'
+import ShopLayout from 'layout/shop/Shop.layout'
 
 const HomePage = () => {
     return (
-        <div>
+        <ShopLayout>
             Home Page
-        </div>
+        </ShopLayout>
     )
 }
 

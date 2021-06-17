@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -15,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     button: {
-        marginLeft: theme.spacing(2)
+        marginLeft: theme.spacing(3)
     },
     icon: {
         fontSize: 30
@@ -57,8 +55,9 @@ const Header = () => {
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
                     <Button color="inherit" className={classes.button}>مدیریت</Button>
+                    
+                    {cart()}
                     <Button color="inherit">
-                        {cart()}
                         سبد خرید
                     </Button>
                 </div>

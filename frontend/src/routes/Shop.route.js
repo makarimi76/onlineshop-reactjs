@@ -1,11 +1,11 @@
-import { Route, Switch } from "react-router-dom"
+import { Route, Switch } from 'react-router-dom'
 
-import ProductsPage from "../pages/shop/products/Products.page"
-import ProductPage from "../pages/shop/Product.page"
-import CartPage from "../pages/shop/Cart.page"
-import CheckoutPage from "../pages/shop/Checkout.page"
-import PaymentResultPage from "../pages/shop/PaymentResult.page"
-import NotFoundPage from "../pages/NotFound.page"
+import ProductsPage from 'pages/shop/products/Products.page'
+import ProductPage from 'pages/shop/Product.page'
+import CartPage from 'pages/shop/Cart.page'
+import CheckoutPage from 'pages/shop/Checkout.page'
+import PaymentResultPage from 'pages/shop/PaymentResult.page'
+import NotFoundPage from 'pages/NotFound.page'
 
 const ShopRoute = () => {
     console.log('Shop Route')

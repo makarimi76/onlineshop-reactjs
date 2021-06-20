@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import RouterLink from 'components/RouterLink'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -23,10 +23,6 @@ const useStyles = makeStyles((theme) => ({
     },
     cartIcon: {
         fontSize: 24
-    },
-    link: {
-        textDecoration: 'none',
-        color: '#ffffff'
     },
     sectionDesktop: {
         display: 'none',
@@ -62,14 +58,14 @@ const Header = () => {
                 </Typography>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                    <Link to='/admin/login' className={classes.link}><Button color="inherit" className={classes.button}>مدیریت</Button></Link>
+                    <RouterLink to='/admin/login'><Button color="inherit" className={classes.button}>مدیریت</Button></RouterLink>
                     <Button color="inherit">
                         {cart()}
                         سبد خرید
                     </Button>
                 </div>
                 <div className={classes.sectionMobile}>
-                    <Link to='/admin/login' className={classes.link}><Button color="inherit" className={classes.button}>مدیریت</Button></Link>
+                    <RouterLink to='/admin/login'><Button color="inherit" className={classes.button}>مدیریت</Button></RouterLink>
                     <Button color="inherit">
                         {cart()}
                     </Button>

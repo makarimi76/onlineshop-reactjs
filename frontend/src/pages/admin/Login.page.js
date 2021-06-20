@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import AdminLoginLayout from 'layout/shop/admin/Login.layout'
+import AdminLoginLayout from 'layout/admin/Login.layout'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'

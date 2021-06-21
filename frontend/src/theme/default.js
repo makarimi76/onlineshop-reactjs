@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles"
+import { unstable_createMuiStrictModeTheme as createMuiTheme } from "@material-ui/core/styles"
 
 import IRANYekanWebRegular from './fonts/IRANYekanWeb-Regular.woff'
 

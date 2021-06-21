@@ -8,7 +8,6 @@ import PaymentResultPage from 'pages/shop/PaymentResult.page'
 import NotFoundPage from 'pages/NotFound.page'
 
 const ShopRoute = () => {
-    console.log('Shop Route')
     return (
         <Switch>
             <Route path='/shop/products/:category' component={ProductsPage} />

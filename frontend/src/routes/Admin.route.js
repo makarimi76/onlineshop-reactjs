@@ -7,7 +7,6 @@ import LoginPage from 'pages/admin/Login.page'
 import NotFoundPage from 'pages/NotFound.page'
 
 const AdminRoute = () => {
-    console.log('Admin Route')
     return (
         <Switch>
             <Route exact path='/admin' component={ProductsPage} />

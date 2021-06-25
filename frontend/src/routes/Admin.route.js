@@ -1,8 +1,8 @@
 import { Route, Switch } from 'react-router-dom'
 
-import ProductsPage from 'pages/admin/products/Products.page'
-import ProductsQuantityPage from 'pages/admin/products-quantity/ProductsQuantity.page'
-import OrdersPage from 'pages/admin/orders/Orders.page'
+import ProductsPage from 'pages/admin/Products.page'
+import ProductsQuantityPage from 'pages/admin/ProductsQuantity.page'
+import OrdersPage from 'pages/admin/Orders.page'
 import LoginPage from 'pages/admin/Login.page'
 import NotFoundPage from 'pages/NotFound.page'
 

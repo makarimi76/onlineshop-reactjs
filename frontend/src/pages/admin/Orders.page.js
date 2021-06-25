@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import RouterLink from 'components/RouterLink'
 
 import AdminLayout from 'layout/admin/Admin.layout'
 
 import AdminTable from 'pages/admin/components/AdminTable'
-import EditText from 'pages/admin/components/EditText'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -81,7 +79,7 @@ const OrdersPage = () => {
             res.data.map((item) => {
                 let totalPrice = 0
                 item.orderList.map((order) => {
-                    totalPrice += Number(order.price)
+                    return totalPrice += Number(order.price)
                 })
 
                 let { id, customer, orderTime } = item
@@ -103,7 +101,6 @@ const OrdersPage = () => {
 
     const handleOrderStatusChange = (e) => {
         setOrderStatus(e.target.value)
-        console.log(e.target.value)
     }
 
     return (

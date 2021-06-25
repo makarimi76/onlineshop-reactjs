@@ -57,7 +57,7 @@ const MobileHeaderMenu = ({ menuOptions }) => {
                     <IoMdArrowDropdown />
                 </Button>
             </ButtonGroup>
-            <Popper open={isMenuOpen} anchorEl={anchorRef.current} transition disablePortal>
+            <Popper open={isMenuOpen} anchorEl={anchorRef.current} transition disablePortal style={{zIndex: 10}}>
                 {({ TransitionProps, placement }) => (
                     <Grow
                         {...TransitionProps}

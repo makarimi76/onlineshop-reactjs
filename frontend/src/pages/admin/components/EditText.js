@@ -28,6 +28,7 @@ const EditText = ({ value }) => {
                 </Button>
                 :
                 <TextField
+                    fullWidth
                     type="number"
                     variant="outlined"
                     size="small"

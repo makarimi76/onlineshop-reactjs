@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
 
+// Redux
+import { getOrders, startLoading } from 'redux/actions/admin/admin.action'
+
+// Components
 import AdminLayout from 'layout/admin/Admin.layout'
-
 import AdminTable from 'pages/admin/components/AdminTable'
 
+// UI
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
@@ -39,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const OrdersPage = () => {
+const OrdersPage = ({ getOrders, startLoading, admin: { orders, totalCount, loading } }) => {
 
     const classes = useStyles()
 
@@ -63,32 +67,30 @@ const OrdersPage = () => {
     ]
 
     const [rows, setRows] = useState([])
-
-    const [totalCount, setTotalCount] = useState(0)
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
     const [orderStatus, setOrderStatus] = useState('total')
 
+    // Get Orders
     useEffect(() => {
-        const fetchData = async () => {
-            setRows([])
-            const res = await axios.get(`/orders?` +
-                (orderStatus === 'waiting' ? 'isDelivery=false&' : orderStatus === 'delivered' ? 'isDelivery=true&' : '') +
-                `_page=${page + 1}&_limit=${rowsPerPage}`)
+        startLoading()
+        getOrders(orderStatus, page, rowsPerPage)
+    }, [startLoading, getOrders, orderStatus, page, rowsPerPage])
 
-            res.data.map((item) => {
-                let totalPrice = 0
-                item.orderList.map((order) => {
-                    return totalPrice += Number(order.price)
-                })
 
-                let { id, customer, orderTime } = item
-                return setRows(rows => [...rows, { id, customer, totalPrice, orderTime }])
+    // Set Rows
+    useEffect(() => {
+        setRows([])
+        orders.map((item) => {
+            let totalPrice = 0
+            item.orderList.map((order) => {
+                return totalPrice += Number(order.price)
             })
-            setTotalCount(+res.headers['x-total-count'])
-        }
-        fetchData()
-    }, [orderStatus, page, rowsPerPage])
+
+            let { id, customer, orderTime } = item
+            return setRows(rows => [...rows, { id, customer, totalPrice, orderTime }])
+        })
+    }, [orders])
 
     const handleChangePage = (e, newPage) => {
         setPage(newPage);
@@ -115,7 +117,7 @@ const OrdersPage = () => {
                 </RadioGroup>
             </div>
 
-            {rows.length === 0 ? <div className={classes.spinner}><CircularProgress /></div> :
+            {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                 <Paper elevation={3} className={classes.root}>
                     <AdminTable
                         head={
@@ -162,4 +164,10 @@ const OrdersPage = () => {
     )
 }
 
-export default OrdersPage
+const mapStateToProps = state => ({
+    admin: state.admin
+})
+
+export default connect(mapStateToProps, {
+    getOrders, startLoading
+})(OrdersPage)

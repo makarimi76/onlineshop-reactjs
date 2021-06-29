@@ -1,3 +1,4 @@
 export const GET_PRODUCTS = 'GET_PRODUCTS'
+export const GET_ORDERS = 'GET_ORDERS'
 export const START_LOADING = 'START_LOADING'
 export const ADMIN_ERROR = 'ADMIN_ERROR'

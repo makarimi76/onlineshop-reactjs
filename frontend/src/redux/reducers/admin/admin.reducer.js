@@ -1,11 +1,13 @@
 import {
     GET_PRODUCTS,
+    GET_ORDERS,
     START_LOADING,
     ADMIN_ERROR
 } from 'redux/actions/admin/type.action'
 
 const initialState = {
     products: [],
+    orders: [],
     totalCount: null,
     loading: true,
     error: null
@@ -19,6 +21,13 @@ export default function admin(state = initialState, action) {
             return {
                 ...state,
                 products: payload.products,
+                totalCount: payload.totalCount,
+                loading: false
+            }
+        case GET_ORDERS:
+            return {
+                ...state,
+                orders: payload.orders,
                 totalCount: payload.totalCount,
                 loading: false
             }

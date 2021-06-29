@@ -1,0 +1,3 @@
+export const GET_PRODUCTS = 'GET_PRODUCTS'
+export const START_LOADING = 'START_LOADING'
+export const ADMIN_ERROR = 'ADMIN_ERROR'

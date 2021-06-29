@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
-import RouterLink from 'components/RouterLink'
+import { connect } from 'react-redux'
 
+// Redux
+import { getProducts, startLoading } from 'redux/actions/admin/admin.action'
+
+// Components
 import AdminLayout from 'layout/admin/Admin.layout'
-
 import AdminTable from 'pages/admin/components/AdminTable'
 import EditText from 'pages/admin/components/EditText'
+import RouterLink from 'components/RouterLink'
 
+// UI
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
@@ -36,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductQuantityPage = () => {
+const ProductQuantityPage = ({ getProducts, startLoading, admin: { products, totalCount, loading } }) => {
 
     const classes = useStyles()
 
@@ -56,23 +60,24 @@ const ProductQuantityPage = () => {
     ]
 
     const [rows, setRows] = useState([])
-
-    const [totalCount, setTotalCount] = useState(0)
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
+    // Get Products
     useEffect(() => {
-        const fetchData = async () => {
-            setRows([])
-            const res = await axios.get(`/products?_page=${page + 1}&_limit=${rowsPerPage}`)
-            res.data.map((item) => {
-                let { id, name, price, quantity } = item
-                return setRows(rows => [...rows, { id, name, price, quantity }])
-            })
-            setTotalCount(+res.headers['x-total-count'])
-        }
-        fetchData()
-    }, [page, rowsPerPage])
+        startLoading()
+        getProducts(page, rowsPerPage)
+    }, [startLoading, getProducts, page, rowsPerPage])
+
+
+    // Set Rows
+    useEffect(() => {
+        setRows([])
+        products.map((item) => {
+            let { id, image, name, categories } = item
+            return setRows(rows => [...rows, { id, image, name, categories }])
+        })
+    }, [products])
 
     const handleChangePage = (e, newPage) => {
         setPage(newPage);
@@ -90,7 +95,7 @@ const ProductQuantityPage = () => {
                 <Button variant="contained" color="secondary">ذخیره</Button>
             </div>
 
-            {rows.length === 0 ? <div className={classes.spinner}><CircularProgress /></div> :
+            {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                 <Paper elevation={3} className={classes.root}>
                     <AdminTable
                         head={
@@ -112,7 +117,7 @@ const ProductQuantityPage = () => {
                                     <EditText value={row.price} />
                                 </TableCell>
                                 <TableCell align="left" style={{ width: "20%" }}>
-                                <EditText value={row.quantity} />
+                                    <EditText value={row.quantity} />
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -135,4 +140,10 @@ const ProductQuantityPage = () => {
     )
 }
 
-export default ProductQuantityPage
+const mapStateToProps = state => ({
+    admin: state.admin
+})
+
+export default connect(mapStateToProps, {
+    getProducts, startLoading
+})(ProductQuantityPage)

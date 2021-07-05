@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { setAlert,enqueueSnackbar } from 'redux/actions/alert.action'
+import { setAlert } from 'redux/actions/alert.action'
 
 import {
     GET_PRODUCTS,
@@ -49,7 +49,7 @@ export const addProduct = formData => async dispatch => {
     })
 
     try {
-        const res = await axios.post('/products', body, config);
+        const res = await axios.post('/products', body, config)
 
         console.log(res)
         dispatch({
@@ -64,7 +64,7 @@ export const addProduct = formData => async dispatch => {
         dispatch({
             type: ADMIN_ERROR,
             payload: err
-        });
+        })
     }
 }
 

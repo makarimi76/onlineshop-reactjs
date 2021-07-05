@@ -7,6 +7,9 @@ import ShopRoute from 'routes/Shop.route'
 import AdminRoute from 'routes/Admin.route'
 import NotFoundPage from 'pages/NotFound.page'
 
+//Redux
+import { Provider } from 'react-redux'
+import store from 'redux/store'
 const App = () => {
   return (
     <Provider store={store}>

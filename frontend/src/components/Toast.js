@@ -1,36 +1,49 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 
-import Snackbar from '@material-ui/core/Snackbar'
-import Alert from '@material-ui/lab/Alert'
+import { SnackbarProvider } from 'notistack'
+import Zoom from '@material-ui/core/Zoom'
+import IconButton from '@material-ui/core/IconButton'
 
-const Toast = ({ alerts }) => {
+import { IoMdClose } from 'react-icons/io'
 
-    const [open, setOpen] = useState(true)
+const Toast = ({ children, alert }) => {
 
-    const handleClose = () => {
-        setOpen(false)
-    }
+    const notistackRef = useRef()
 
     useEffect(() => {
-        setOpen(true)
-    }, [alerts])
+        if (Object.keys(alert).length !== 0) {
+            notistackRef.current.enqueueSnackbar(
+                alert.msg,
+                {
+                    variant: alert.type,
+                }
+            )
+        }
+    }, [alert])
 
-    return (alerts.length > 0 &&
-        alerts.map(alert => (
-            <Snackbar
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                open={open}
-            >
-                <Alert onClose={handleClose} severity={alert.type} >
-                    {alert.msg}
-                </Alert>
-            </Snackbar>
-        )))
+    const handleClose = key => () => {
+        notistackRef.current.closeSnackbar(key)
+    }
+
+    return (
+        <SnackbarProvider
+            ref={notistackRef}
+            maxSnack={5}
+            TransitionComponent={Zoom}
+            action={(key) => (
+                <IconButton color="inherit" onClick={handleClose(key)}>
+                    <IoMdClose />
+                </IconButton>
+            )}
+        >
+            {children}
+        </SnackbarProvider>
+    )
 }
 
 const mapStateToProps = state => ({
-    alerts: state.admin
-});
+    alert: state.alert
+})
 
-export default connect(mapStateToProps)(Toast);
+export default connect(mapStateToProps)(Toast)

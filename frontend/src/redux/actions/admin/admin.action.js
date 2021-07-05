@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { setAlert,enqueueSnackbar } from 'redux/actions/alert.action'
 
 import {
     GET_PRODUCTS,
@@ -7,7 +8,7 @@ import {
     GET_CATEGORIES,
     START_LOADING,
     ADMIN_ERROR
-} from "redux/actions/admin/type.action"
+} from "redux/actions/admin/types"
 
 // Get Products
 export const getProducts = (page, rowsPerPage) => async dispatch => {
@@ -55,6 +56,8 @@ export const addProduct = formData => async dispatch => {
             type: ADD_PRODUCT,
             payload: res.data
         })
+
+        dispatch(setAlert(`کالا ${res.data.id} با موفقیت اضافه شد`, 'success'))
 
     } catch (err) {
 

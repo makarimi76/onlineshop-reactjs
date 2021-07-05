@@ -5,7 +5,7 @@ import {
     GET_CATEGORIES,
     START_LOADING,
     ADMIN_ERROR
-} from 'redux/actions/admin/type.action'
+} from 'redux/actions/admin/types'
 
 const initialState = {
     products: [],

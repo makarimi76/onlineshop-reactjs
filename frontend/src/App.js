@@ -13,15 +13,16 @@ import store from 'redux/store'
 const App = () => {
   return (
     <Provider store={store}>
-      <Toast open={true} />
-      <Router>
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/shop' component={ShopRoute} />
-          <Route path='/admin' component={AdminRoute} />
-          <Route component={NotFoundPage}></Route>
-        </Switch>
-      </Router>
+      <Toast>
+        <Router>
+          <Switch>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/shop' component={ShopRoute} />
+            <Route path='/admin' component={AdminRoute} />
+            <Route component={NotFoundPage}></Route>
+          </Switch>
+        </Router>
+      </Toast>
     </Provider>
   )
 }

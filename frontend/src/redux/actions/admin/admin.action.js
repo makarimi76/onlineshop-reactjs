@@ -3,10 +3,12 @@ import { setAlert } from 'redux/actions/alert.action'
 
 import {
     GET_PRODUCTS,
+    GET_PRODUCT,
     ADD_PRODUCT,
     GET_ORDERS,
     GET_CATEGORIES,
     START_LOADING,
+    START_MODAL_LOADING,
     ADMIN_ERROR
 } from "redux/actions/admin/types"
 
@@ -29,6 +31,26 @@ export const getProducts = (page, rowsPerPage) => async dispatch => {
         })
     }
 }
+
+
+// Get Product
+export const getProduct = (id) => async dispatch => {
+    try {
+        const res = await axios.get(`/products?id=${id}`)
+
+        dispatch({
+            type: GET_PRODUCT,
+            payload: res.data[0]
+        })
+
+    } catch (err) {
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: err
+        })
+    }
+}
+
 
 // Add Product
 export const addProduct = formData => async dispatch => {
@@ -112,5 +134,12 @@ export const getCategories = () => async dispatch => {
 export const startLoading = () => dispatch => {
     dispatch({
         type: START_LOADING
+    })
+}
+
+// Start Modal Loading
+export const startModalLoading = () => dispatch => {
+    dispatch({
+        type: START_MODAL_LOADING
     })
 }

@@ -102,12 +102,13 @@ const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount
 
     const [manageProduct, setManageProduct] = useState({
         open: false,
+        type: undefined,
         title: undefined,
         id: undefined
     })
 
-    const handleManageProduct = (title, id) => {
-        setManageProduct({ open: true, title, id })
+    const handleManageProduct = (type, title, id) => {
+        setManageProduct({ open: true, type, title, id })
     }
 
     return (
@@ -120,8 +121,8 @@ const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount
                     variant="contained"
                     color="primary"
                     className={classes.addButton}
-                    onClick={() => handleManageProduct('افزودن کالای جدید')}
-                >افزودن کالا</Button>
+                    onClick={() => handleManageProduct('new', 'افزودن کالای جدید')}
+                > افزودن کالا</Button>
             </div>
 
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
@@ -159,8 +160,8 @@ const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount
                                     <Button
                                         color="secondary"
                                         startIcon={<IoMdCreate />}
-                                        onClick={() => handleManageProduct('ویرایش کالا', row.id)}
-                                    >ویرایش</Button>
+                                        onClick={() => handleManageProduct('edit', 'ویرایش کالا', row.id)}
+                                    > ویرایش</Button>
                                     <Button
                                         color="primary"
                                         startIcon={<IoMdTrash />}

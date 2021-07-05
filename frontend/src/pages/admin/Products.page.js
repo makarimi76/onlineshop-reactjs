@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import RouterLink from 'components/RouterLink'
 
 import AdminLayout from 'layout/admin/Admin.layout'
 
 import AdminTable from 'pages/admin/components/AdminTable'
+
+import RouterLink from 'components/RouterLink'
+import ManageProduct from 'pages/admin/components/ManageProduct'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -95,14 +97,32 @@ const ProductsPage = () => {
         setPage(0)
     }
 
+    const [manageProduct, setManageProduct] = useState({
+        open: false,
+        title: undefined,
+        id: undefined
+    })
+
+    const handleManageProduct = (title, id) => {
+        console.log('Open')
+        setManageProduct({ open: true, title, id })
+    }
+
     return (
         <AdminLayout>
+            {manageProduct.open && <ManageProduct options={manageProduct} setOptions={setManageProduct} />}
+
             <div className={classes.topMenu}>
                 <Typography variant="h6">مدیریت کالا ها</Typography>
-                <Button variant="contained" color="primary" className={classes.addButton}>افزودن کالا</Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.addButton}
+                    onClick={() => handleManageProduct('افزودن کالای جدید')}
+                >افزودن کالا</Button>
             </div>
 
-            {rows.length === 0 ? <div className={classes.spinner}><CircularProgress /></div> :
+            {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                 <Paper elevation={3} className={classes.root}>
                     <AdminTable
                         head={
@@ -137,6 +157,7 @@ const ProductsPage = () => {
                                     <Button
                                         color="secondary"
                                         startIcon={<IoMdCreate />}
+                                        onClick={() => handleManageProduct('ویرایش کالا', row.id)}
                                     >ویرایش</Button>
                                     <Button
                                         color="primary"
@@ -160,7 +181,7 @@ const ProductsPage = () => {
                     />
                 </Paper>
             }
-        </AdminLayout>
+        </AdminLayout >
     )
 }
 

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { connect } from 'react-redux'
 
 // Redux
 import { getProducts, startLoading } from 'redux/actions/admin/admin.action'
 
 // Components
+import RouterLink from 'components/RouterLink'
 import AdminLayout from 'layout/admin/Admin.layout'
 import AdminTable from 'pages/admin/components/AdminTable'
 import ManageProduct from 'pages/admin/components/ManageProduct'

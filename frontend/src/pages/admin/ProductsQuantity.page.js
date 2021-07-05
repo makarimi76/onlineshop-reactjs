@@ -5,10 +5,10 @@ import { connect } from 'react-redux'
 import { getProducts, startLoading } from 'redux/actions/admin/admin.action'
 
 // Components
+import RouterLink from 'components/RouterLink'
 import AdminLayout from 'layout/admin/Admin.layout'
 import AdminTable from 'pages/admin/components/AdminTable'
 import EditText from 'pages/admin/components/EditText'
-import RouterLink from 'components/RouterLink'
 
 // UI
 import { makeStyles } from '@material-ui/core/styles'

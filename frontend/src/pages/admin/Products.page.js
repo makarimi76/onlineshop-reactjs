@@ -107,7 +107,6 @@ const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount
     })
 
     const handleManageProduct = (title, id) => {
-        console.log('Open')
         setManageProduct({ open: true, title, id })
     }
 

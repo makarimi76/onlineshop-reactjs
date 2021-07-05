@@ -9,6 +9,6 @@ export const productValidation = (values, formData, errors, setErrors) => {
 
     setErrors({ ...temp })
 
-    if (values == formData)
-        return Object.values(temp).every(x => x == '')
+    if (values === formData)
+        return Object.values(temp).every(x => x === '')
 }

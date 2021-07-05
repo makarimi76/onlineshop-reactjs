@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 // Redux
 import { addProduct, getCategories } from 'redux/actions/admin/admin.action'
 
+// Utils
+import { productValidation } from 'utils/formValidation'
+
 // UI
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -60,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ManageProduct = ({ options: { open, title, id }, setOptions, addProduct, getCategories, admin: { categories } }) => {
 
-    const theme = useTheme();
+    const theme = useTheme()
     const classes = useStyles()
 
     const [formData, setFormData] = useState({
@@ -71,30 +74,37 @@ const ManageProduct = ({ options: { open, title, id }, setOptions, addProduct, g
         price: '',
         quantity: ''
     })
-
     const { name, description, image, price, quantity } = formData
+
+    const [errors, setErrors] = useState({})
 
     useEffect(() => {
         getCategories()
         if (id !== undefined) {
             console.log(id)
         }
-    }, [id])
+    }, [getCategories, id])
 
-    const handelChange = ({ target: { name, value } }) => setFormData({ ...formData, [name]: value })
+
+    const handelChange = ({ target: { name, value } }) => {
+        setFormData({ ...formData, [name]: value })
+        productValidation({ [name]: value }, formData, errors, setErrors)
+    }
 
     const handleClose = () => {
-        console.log('Close')
         setOptions({ open: false, title: '' })
     }
 
     const handleSubmit = () => {
-        console.log('Submit', formData)
-        addProduct(formData)
-        // setOptions({ open: false, title: '' })
+        console.log(formData)
+        if (productValidation(formData, formData, errors, setErrors)) {
+            setOptions({ open: false, title: '' })
+            addProduct(formData)
+        }
     }
 
     const selectedCategory = formData.categories[formData.categories.length - 1] || null
+
     return (
         <>
             <Dialog
@@ -152,6 +162,7 @@ const ManageProduct = ({ options: { open, title, id }, setOptions, addProduct, g
                         onChange={e => handelChange(e)}
                         value={name}
                         required
+                        {...(errors.name && { error: true, helperText: errors.name })}
                     />
 
                     <TextField
@@ -161,28 +172,22 @@ const ManageProduct = ({ options: { open, title, id }, setOptions, addProduct, g
                         color="secondary"
                         fullWidth
                         value={selectedCategory ? selectedCategory : ''}
+                        {...(errors.categories && { error: true, helperText: errors.categories })}
                     >
-                        {categories.map(category => {
-                            if (category.subset) {
-                                return [
-                                    <ListSubheader className="MuiListItem-root" dir="rtl">{category.name}</ListSubheader>,
-                                    categories.map(child => {
-                                        if (child.parentId === category.id) {
-                                            return (
-                                                <MenuItem
-                                                    dir="rtl"
-                                                    value={child.name}
-                                                    style={{ paddingRight: 40 }}
-                                                    onClick={() => {
-                                                        setFormData({ ...formData, categories: [category.name, child.name] })
-                                                    }}
-                                                >{child.name}</MenuItem>
-                                            )
-                                        }
-                                    })
-                                ]
-                            }
-                        })}
+                        {categories.map(category => category.subset &&
+                            [<ListSubheader key={category.id} className="MuiListItem-root" dir="rtl">{category.name}</ListSubheader>,
+                            categories.map(child => child.parentId === category.id &&
+                                <MenuItem
+                                    dir="rtl"
+                                    value={child.name}
+                                    key={child.id}
+                                    style={{ paddingRight: 40 }}
+                                    onClick={() => {
+                                        setFormData({ ...formData, categories: [category.name, child.name] })
+                                    }}
+                                >{child.name}</MenuItem>
+                            )]
+                        )}
                     </TextField>
 
                     <TextField
@@ -196,6 +201,8 @@ const ManageProduct = ({ options: { open, title, id }, setOptions, addProduct, g
                         name="description"
                         onChange={e => handelChange(e)}
                         value={description}
+                        required
+                        {...(errors.description && { error: true, helperText: errors.description })}
                     />
 
                     <Grid container spacing={1}>

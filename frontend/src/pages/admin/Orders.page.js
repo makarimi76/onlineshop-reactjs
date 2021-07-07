@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getOrders, startLoading } from 'redux/actions/admin/admin.action'
+import { getOrders, startLoading } from 'redux/actions/admin/order.action'
 
 // Components
 import AdminLayout from 'layout/admin/Admin.layout'
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const OrdersPage = ({ getOrders, startLoading, admin: { orders, totalCount, loading } }) => {
+const OrdersPage = ({ getOrders, startLoading, order: { orders, totalCount, loading } }) => {
 
     const classes = useStyles()
 
@@ -66,7 +66,6 @@ const OrdersPage = ({ getOrders, startLoading, admin: { orders, totalCount, load
         }
     ]
 
-    const [rows, setRows] = useState([])
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
     const [orderStatus, setOrderStatus] = useState('total')
@@ -79,18 +78,18 @@ const OrdersPage = ({ getOrders, startLoading, admin: { orders, totalCount, load
 
 
     // Set Rows
-    useEffect(() => {
-        setRows([])
-        orders.map((item) => {
-            let totalPrice = 0
-            item.orderList.map((order) => {
-                return totalPrice += Number(order.price)
-            })
+    // useEffect(() => {
+    //     setRows([])
+    //     orders.map((item) => {
+    //         let totalPrice = 0
+    //         item.orderList.map((order) => {
+    //             return totalPrice += Number(order.price)
+    //         })
 
-            let { id, customer, orderTime } = item
-            return setRows(rows => [...rows, { id, customer, totalPrice, orderTime }])
-        })
-    }, [orders])
+    //         let { id, customer, orderTime } = item
+    //         return setRows(rows => [...rows, { id, customer, totalPrice, orderTime }])
+    //     })
+    // }, [orders])
 
     const handleChangePage = (e, newPage) => {
         setPage(newPage);
@@ -132,10 +131,12 @@ const OrdersPage = ({ getOrders, startLoading, admin: { orders, totalCount, load
                             </TableRow>
                         }
 
-                        body={rows.map((row) => (
+                        body={orders.map((row) => (
                             <TableRow key={row.id}>
                                 <TableCell align="left" style={{ width: "30%" }} size='small'>{row.customer}</TableCell>
-                                <TableCell align="left" style={{ width: "25%" }}>{row.totalPrice}</TableCell>
+                                <TableCell align="left" style={{ width: "25%" }}>
+                                    {row.orderList.map((order) => Number(order.price)).reduce((a, b) => a + b, 0)}
+                                </TableCell>
                                 <TableCell align="left" style={{ width: "25%" }}>{row.orderTime}</TableCell>
                                 <TableCell align="left" style={{ width: "20%" }}>
                                     <Button
@@ -165,7 +166,7 @@ const OrdersPage = ({ getOrders, startLoading, admin: { orders, totalCount, load
 }
 
 const mapStateToProps = state => ({
-    admin: state.admin
+    order: state.admin.order
 })
 
 export default connect(mapStateToProps, {

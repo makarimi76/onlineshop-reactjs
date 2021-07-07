@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProduct, addProduct, getCategories, startModalLoading } from 'redux/actions/admin/admin.action'
+import { getProduct, addProduct } from 'redux/actions/admin/product.action'
+import { getCategories, startCategoryLoading } from 'redux/actions/admin/category.action'
 
 // Utils
 import { productValidation } from 'utils/formValidation'
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ManageProduct = ({ options: { open, type, title, id }, setOptions, getProduct, addProduct, getCategories, startModalLoading, admin: { product, categories, modalLoading } }) => {
+const ManageProduct = ({ options: { open, type, title, id }, setOptions, getProduct, addProduct, getCategories, startCategoryLoading, product: { product, modalLoading }, category: { categories, loading } }) => {
 
     const theme = useTheme()
     const classes = useStyles()
@@ -84,17 +85,17 @@ const ManageProduct = ({ options: { open, type, title, id }, setOptions, getProd
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
-        startModalLoading()
+        startCategoryLoading()
         getCategories()
         if (id !== undefined) {
             getProduct(id)
         }
-    }, [getProduct, getCategories, startModalLoading, id])
+    }, [getProduct, getCategories, startCategoryLoading, id])
 
     useEffect(() => {
         if (product && type === 'edit')
             setFormData({ ...product })
-    }, [ product, type])
+    }, [product, type])
 
     const handelChange = ({ target: { name, value } }) => {
         setFormData({ ...formData, [name]: value })
@@ -133,7 +134,7 @@ const ManageProduct = ({ options: { open, type, title, id }, setOptions, getProd
                 </DialogTitle>
 
                 <DialogContent dir="rtl" dividers className={classes.content}>
-                    {modalLoading ? <div className={classes.spinner}><CircularProgress /></div> :
+                    {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                         <>
                             <FormControl margin="normal" fullWidth>
                                 <FormLabel>تصویر کالا</FormLabel>
@@ -259,9 +260,10 @@ const ManageProduct = ({ options: { open, type, title, id }, setOptions, getProd
 }
 
 const mapStateToProps = state => ({
-    admin: state.admin
+    product: state.admin.product,
+    category: state.admin.category
 })
 
 export default connect(mapStateToProps, {
-    getProduct, addProduct, getCategories, startModalLoading
+    getProduct, addProduct, getCategories, startCategoryLoading
 })(ManageProduct)

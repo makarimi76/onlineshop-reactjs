@@ -2,26 +2,21 @@ import {
     GET_PRODUCTS,
     GET_PRODUCT,
     ADD_PRODUCT,
-    GET_ORDERS,
-    GET_CATEGORIES,
-    START_LOADING,
-    START_MODAL_LOADING,
-    ADMIN_ERROR
+    START_PRODUCT_LOADING,
+    PRODUCT_ERROR
 } from 'redux/actions/admin/types'
 
 const initialState = {
     products: [],
     product: null,
     newProduct: null,
-    orders: [],
     categories: [],
     totalCount: null,
     loading: true,
-    modalLoading: true,
     error: null
 }
 
-export default function admin(state = initialState, action) {
+export default function product(state = initialState, action) {
     const { type, payload } = action
 
     switch (type) {
@@ -44,30 +39,12 @@ export default function admin(state = initialState, action) {
                 newProduct: payload,
                 loading: false
             }
-        case GET_ORDERS:
-            return {
-                ...state,
-                orders: payload.orders,
-                totalCount: payload.totalCount,
-                loading: false
-            }
-        case GET_CATEGORIES:
-            return {
-                ...state,
-                categories: payload,
-                modalLoading: false
-            }
-        case START_LOADING:
+        case START_PRODUCT_LOADING:
             return {
                 ...state,
                 loading: true
             }
-        case START_MODAL_LOADING:
-            return {
-                ...state,
-                modalLoading: true
-            }
-        case ADMIN_ERROR:
+        case PRODUCT_ERROR:
             return {
                 ...state,
                 error: payload,

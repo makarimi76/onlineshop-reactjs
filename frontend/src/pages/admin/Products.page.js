@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProducts, startLoading } from 'redux/actions/admin/admin.action'
+import { getProducts, startLoading } from 'redux/actions/admin/product.action'
 
 // Components
 import RouterLink from 'components/RouterLink'
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount, loading } }) => {
+const ProductsPage = ({ getProducts, startLoading, product: { products, totalCount, loading } }) => {
 
     const classes = useStyles()
 
@@ -72,7 +72,6 @@ const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount
         },
     ]
 
-    const [rows, setRows] = useState([])
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
@@ -81,15 +80,6 @@ const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount
         startLoading()
         getProducts(page, rowsPerPage)
     }, [startLoading, getProducts, page, rowsPerPage])
-
-    // Set Rows
-    useEffect(() => {
-        setRows([])
-        products.map((item) => {
-            let { id, image, name, categories } = item
-            return setRows(rows => [...rows, { id, image, name, categories }])
-        })
-    }, [products])
 
     const handleChangePage = (e, newPage) => {
         setPage(newPage);
@@ -140,7 +130,7 @@ const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount
                             </TableRow>
                         }
 
-                        body={rows.map((row) => (
+                        body={products.map((row) => (
                             <TableRow key={row.id}>
                                 <TableCell align="left" style={{ width: "10%" }} >
                                     <Avatar variant="rounded" src={row.image} className={classes.image} >
@@ -189,7 +179,7 @@ const ProductsPage = ({ getProducts, startLoading, admin: { products, totalCount
 }
 
 const mapStateToProps = state => ({
-    admin: state.admin
+    product: state.admin.product
 })
 
 export default connect(mapStateToProps, {

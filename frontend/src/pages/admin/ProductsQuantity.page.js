@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProducts, startLoading, updateProductsQuantity } from 'redux/actions/admin/admin.action'
+import { getProducts, startLoading, updateProductsQuantity } from 'redux/actions/admin/product.action'
 
 // Components
 import RouterLink from 'components/RouterLink'
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity, admin: { products, totalCount, loading } }) => {
+const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity, product: { products, totalCount, loading } }) => {
 
     const classes = useStyles()
 
@@ -160,7 +160,7 @@ const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity
 }
 
 const mapStateToProps = state => ({
-    admin: state.admin
+    product: state.admin.product
 })
 
 export default connect(mapStateToProps, {

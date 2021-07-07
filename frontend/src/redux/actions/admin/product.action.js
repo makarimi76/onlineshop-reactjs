@@ -5,11 +5,8 @@ import {
     GET_PRODUCTS,
     GET_PRODUCT,
     ADD_PRODUCT,
-    GET_ORDERS,
-    GET_CATEGORIES,
-    START_LOADING,
-    START_MODAL_LOADING,
-    ADMIN_ERROR
+    START_PRODUCT_LOADING,
+    PRODUCT_ERROR
 } from "redux/actions/admin/types"
 
 // Get Products
@@ -26,7 +23,7 @@ export const getProducts = (page, rowsPerPage) => async dispatch => {
 
     } catch (err) {
         dispatch({
-            type: ADMIN_ERROR,
+            type: PRODUCT_ERROR,
             payload: err
         })
     }
@@ -36,16 +33,16 @@ export const getProducts = (page, rowsPerPage) => async dispatch => {
 // Get Product
 export const getProduct = (id) => async dispatch => {
     try {
-        const res = await axios.get(`/products?id=${id}`)
+        const res = await axios.get(`/products/${id}`)
 
         dispatch({
             type: GET_PRODUCT,
-            payload: res.data[0]
+            payload: res.data
         })
 
     } catch (err) {
         dispatch({
-            type: ADMIN_ERROR,
+            type: PRODUCT_ERROR,
             payload: err
         })
     }
@@ -84,7 +81,7 @@ export const addProduct = formData => async dispatch => {
     } catch (err) {
 
         dispatch({
-            type: ADMIN_ERROR,
+            type: PRODUCT_ERROR,
             payload: err
         })
     }
@@ -94,7 +91,7 @@ export const addProduct = formData => async dispatch => {
 export const updateProductsQuantity = changedData => async dispatch => {
 
     console.log(changedData)
-    
+
     const config = {
         headers: {
             'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>'
@@ -125,7 +122,7 @@ export const updateProductsQuantity = changedData => async dispatch => {
         } catch (err) {
 
             dispatch({
-                type: ADMIN_ERROR,
+                type: PRODUCT_ERROR,
                 payload: err
             })
         }
@@ -157,62 +154,15 @@ export const updateProductsQuantity = changedData => async dispatch => {
     // } catch (err) {
 
     //     dispatch({
-    //         type: ADMIN_ERROR,
+    //         type: PRODUCT_ERROR,
     //         payload: err
     //     })
     // }
 }
 
-// Get Orders
-export const getOrders = (orderStatus, page, rowsPerPage) => async dispatch => {
-    try {
-        const res = await axios.get(`/orders?` +
-            (orderStatus === 'waiting' ? 'isDelivery=false&' : orderStatus === 'delivered' ? 'isDelivery=true&' : '') +
-            `_page=${page + 1}&_limit=${rowsPerPage}`)
-
-        dispatch({
-            type: GET_ORDERS,
-            payload: {
-                orders: res.data, totalCount: +res.headers['x-total-count']
-            }
-        })
-
-    } catch (err) {
-        dispatch({
-            type: ADMIN_ERROR,
-            payload: err
-        })
-    }
-}
-
-// Get Categories
-export const getCategories = () => async dispatch => {
-    try {
-        const res = await axios.get('/categories')
-
-        dispatch({
-            type: GET_CATEGORIES,
-            payload: res.data
-        })
-
-    } catch (err) {
-        dispatch({
-            type: ADMIN_ERROR,
-            payload: err
-        })
-    }
-}
-
 // Start Loading
 export const startLoading = () => dispatch => {
     dispatch({
-        type: START_LOADING
-    })
-}
-
-// Start Modal Loading
-export const startModalLoading = () => dispatch => {
-    dispatch({
-        type: START_MODAL_LOADING
+        type: START_PRODUCT_LOADING
     })
 }

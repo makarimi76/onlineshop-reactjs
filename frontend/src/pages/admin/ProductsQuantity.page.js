@@ -59,42 +59,22 @@ const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity
         }
     ]
 
-    const [rows, setRows] = useState([])
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [changedRows, setChangedRows] = useState([])
 
     // Get Products
     useEffect(() => {
+        setChangedRows([])
         startLoading()
         getProducts(page, rowsPerPage)
     }, [startLoading, getProducts, page, rowsPerPage])
 
-
-    // Set Rows
-    useEffect(() => {
-        setRows([])
-        products.map((item) => {
-            let { id, name, price, quantity } = item
-            return setRows(rows => [...rows, { id, name, price, quantity }])
-        })
-    }, [products])
-
-    const handleChangePage = (e, newPage) => {
-        setPage(newPage);
-    }
-
-    const handleChangeRowsPerPage = (e) => {
-        setRowsPerPage(+e.target.value)
-        setPage(0)
-    }
-
     // If Price or Quantity changed
-    const [changedRows, setChangedRows] = useState([])
-
     const isChanged = (changedId, changedItem) => {
         const index = changedRows.findIndex(item => item.id === changedId)
         if (index !== -1) {
-            if (JSON.stringify(Object.assign(changedRows[index], changedItem)) === JSON.stringify(rows.find(item => item.id === changedId)))
+            if (JSON.stringify(Object.assign(changedRows[index], changedItem)) === JSON.stringify(products.find(item => item.id === changedId)))
                 setChangedRows([
                     ...changedRows.slice(0, index),
                     ...changedRows.slice(index + 1)
@@ -108,14 +88,23 @@ const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity
         } else {
             setChangedRows([
                 ...changedRows,
-                Object.assign({ ...rows.find(item => item.id === changedId) }, changedItem),
+                Object.assign({ ...products.find(item => item.id === changedId) }, changedItem),
             ])
         }
     }
 
+    const handleChangePage = (e, newPage) => {
+        setPage(newPage);
+    }
+
+    const handleChangeRowsPerPage = (e) => {
+        setRowsPerPage(+e.target.value)
+        setPage(0)
+    }
+
     const handleSaveClick = () => {
         if (changedRows.length !== 0)
-            console.log(changedRows)
+            updateProductsQuantity(changedRows)
     }
 
     return (
@@ -140,7 +129,7 @@ const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity
                             </TableRow>
                         }
 
-                        body={rows.map((row) => (
+                        body={products.map((row) => (
                             <TableRow key={row.id}>
                                 <TableCell align="left" style={{ width: "60%" }} size='small'><RouterLink to={`/shop/product/${row.id}`} color="inherit">{row.name}</RouterLink></TableCell>
                                 <TableCell align="left" style={{ width: "20%" }}>

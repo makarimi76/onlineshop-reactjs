@@ -90,6 +90,79 @@ export const addProduct = formData => async dispatch => {
     }
 }
 
+// Update Products Quantity
+export const updateProductsQuantity = changedData => async dispatch => {
+
+    console.log(changedData)
+    
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>'
+        }
+    }
+
+    await changedData.forEach(async item => {
+        const body = new FormData()
+        Object.keys(item).forEach(key => {
+            if (key === 'categories') {
+                item.categories.forEach((item) => body.append(key, item))
+            } else {
+                body.append(key, item[key])
+            }
+        })
+
+        try {
+            const res = await axios.patch(`/products/${item.id}`, body, config)
+
+            console.log(res)
+            // dispatch({
+            //     type: ADD_PRODUCT,
+            //     payload: res.data
+            // })
+
+            // dispatch(setAlert(`کالا ${res.data.id} با موفقیت اضافه شد`, 'success'))
+
+        } catch (err) {
+
+            dispatch({
+                type: ADMIN_ERROR,
+                payload: err
+            })
+        }
+    })
+
+    console.log(changedData)
+
+    // const body = new FormData()
+
+    // Object.keys(formData).forEach(key => {
+    //     if (key === 'categories') {
+    //         formData.categories.forEach((item) => body.append(key, item))
+    //     } else {
+    //         body.append(key, formData[key])
+    //     }
+    // })
+
+    // try {
+    //     const res = await axios.post('/products', body, config)
+
+    //     console.log(res)
+    //     dispatch({
+    //         type: ADD_PRODUCT,
+    //         payload: res.data
+    //     })
+
+    //     dispatch(setAlert(`کالا ${res.data.id} با موفقیت اضافه شد`, 'success'))
+
+    // } catch (err) {
+
+    //     dispatch({
+    //         type: ADMIN_ERROR,
+    //         payload: err
+    //     })
+    // }
+}
+
 // Get Orders
 export const getOrders = (orderStatus, page, rowsPerPage) => async dispatch => {
     try {

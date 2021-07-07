@@ -165,8 +165,8 @@ const OrdersPage = ({ getOrders, startLoading, order: { orders, totalCount, load
     )
 }
 
-const mapStateToProps = state => ({
-    order: state.admin.order
+const mapStateToProps = ({ admin }) => ({
+    order: admin.order
 })
 
 export default connect(mapStateToProps, {

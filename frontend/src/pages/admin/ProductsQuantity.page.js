@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProducts, startLoading, updateProductsQuantity } from 'redux/actions/admin/product.action'
+import { getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProductsQuantity } from 'redux/actions/admin/product.action'
 
 // Components
 import RouterLink from 'components/RouterLink'
@@ -40,7 +40,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity, product: { products, totalCount, loading } }) => {
+const ProductQuantityPage = ({
+    product: { products, totalCount, changedProducts, loading },
+    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProductsQuantity }) => {
 
     const classes = useStyles()
 
@@ -61,35 +63,25 @@ const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity
 
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
-    const [changedRows, setChangedRows] = useState([])
 
     // Get Products
     useEffect(() => {
-        setChangedRows([])
         startLoading()
         getProducts(page, rowsPerPage)
     }, [startLoading, getProducts, page, rowsPerPage])
 
     // If Price or Quantity changed
     const isChanged = (changedId, changedItem) => {
-        const index = changedRows.findIndex(item => item.id === changedId)
-        if (index !== -1) {
-            if (JSON.stringify(Object.assign(changedRows[index], changedItem)) === JSON.stringify(products.find(item => item.id === changedId)))
-                setChangedRows([
-                    ...changedRows.slice(0, index),
-                    ...changedRows.slice(index + 1)
-                ])
+        const changedProductIndex = changedProducts.findIndex(item => item.id === changedId)
+        const productIndex = products.findIndex(item => item.id === changedId)
+
+        if (changedProductIndex !== -1) {
+            if (JSON.stringify(Object.assign(changedProducts[changedProductIndex], changedItem)) === JSON.stringify(products[productIndex]))
+                removeChangedProduct(changedProductIndex)
             else
-                setChangedRows([
-                    ...changedRows.slice(0, index),
-                    Object.assign(changedRows[index], changedItem),
-                    ...changedRows.slice(index + 1)
-                ])
+                updateChangedProduct(changedId, changedItem, changedProductIndex)
         } else {
-            setChangedRows([
-                ...changedRows,
-                Object.assign({ ...products.find(item => item.id === changedId) }, changedItem),
-            ])
+            addChangedProduct(changedId, changedItem)
         }
     }
 
@@ -103,8 +95,9 @@ const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity
     }
 
     const handleSaveClick = () => {
-        if (changedRows.length !== 0)
-            updateProductsQuantity(changedRows)
+        console.log(changedProducts)
+        if (changedProducts.length !== 0)
+            updateProductsQuantity(changedProducts)
     }
 
     return (
@@ -159,10 +152,10 @@ const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity
     )
 }
 
-const mapStateToProps = state => ({
-    product: state.admin.product
+const mapStateToProps = ({ admin }) => ({
+    product: admin.product
 })
 
 export default connect(mapStateToProps, {
-    getProducts, startLoading, updateProductsQuantity
+    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProductsQuantity
 })(ProductQuantityPage)

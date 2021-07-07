@@ -5,6 +5,9 @@ import {
     GET_PRODUCTS,
     GET_PRODUCT,
     ADD_PRODUCT,
+    ADD_CHANGED_PRODUCT,
+    UPDATE_CHANGED_PRODUCT,
+    REMOVE_CHANGED_PRODUCT,
     START_PRODUCT_LOADING,
     PRODUCT_ERROR
 } from "redux/actions/admin/types"
@@ -29,7 +32,6 @@ export const getProducts = (page, rowsPerPage) => async dispatch => {
     }
 }
 
-
 // Get Product
 export const getProduct = (id) => async dispatch => {
     try {
@@ -47,7 +49,6 @@ export const getProduct = (id) => async dispatch => {
         })
     }
 }
-
 
 // Add Product
 export const addProduct = formData => async dispatch => {
@@ -87,6 +88,30 @@ export const addProduct = formData => async dispatch => {
     }
 }
 
+// Add Changed Product
+export const addChangedProduct = (id, item) => dispatch => {
+    dispatch({
+        type: ADD_CHANGED_PRODUCT,
+        payload: { id, item }
+    })
+}
+
+//Update Changed Product
+export const updateChangedProduct = (id, item, index) => dispatch => {
+    dispatch({
+        type: UPDATE_CHANGED_PRODUCT,
+        payload: { id, item, index }
+    })
+}
+
+//Remove Changed Product
+export const removeChangedProduct = (index) => dispatch => {
+    dispatch({
+        type: REMOVE_CHANGED_PRODUCT,
+        payload: index
+    })
+}
+
 // Update Products Quantity
 export const updateProductsQuantity = changedData => async dispatch => {
 
@@ -98,7 +123,7 @@ export const updateProductsQuantity = changedData => async dispatch => {
         }
     }
 
-    await changedData.forEach(async item => {
+    changedData.forEach(async item => {
         const body = new FormData()
         Object.keys(item).forEach(key => {
             if (key === 'categories') {

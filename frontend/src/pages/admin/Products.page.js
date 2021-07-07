@@ -178,8 +178,8 @@ const ProductsPage = ({ getProducts, startLoading, product: { products, totalCou
     )
 }
 
-const mapStateToProps = state => ({
-    product: state.admin.product
+const mapStateToProps = ({ admin }) => ({
+    product: admin.product
 })
 
 export default connect(mapStateToProps, {

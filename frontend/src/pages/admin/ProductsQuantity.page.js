@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProducts, startLoading } from 'redux/actions/admin/admin.action'
+import { getProducts, startLoading, updateProductsQuantity } from 'redux/actions/admin/admin.action'
 
 // Components
 import RouterLink from 'components/RouterLink'
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductQuantityPage = ({ getProducts, startLoading, admin: { products, totalCount, loading } }) => {
+const ProductQuantityPage = ({ getProducts, startLoading, updateProductsQuantity, admin: { products, totalCount, loading } }) => {
 
     const classes = useStyles()
 
@@ -74,8 +74,8 @@ const ProductQuantityPage = ({ getProducts, startLoading, admin: { products, tot
     useEffect(() => {
         setRows([])
         products.map((item) => {
-            let { id, image, name, categories } = item
-            return setRows(rows => [...rows, { id, image, name, categories }])
+            let { id, name, price, quantity } = item
+            return setRows(rows => [...rows, { id, name, price, quantity }])
         })
     }, [products])
 
@@ -88,11 +88,41 @@ const ProductQuantityPage = ({ getProducts, startLoading, admin: { products, tot
         setPage(0)
     }
 
+    // If Price or Quantity changed
+    const [changedRows, setChangedRows] = useState([])
+
+    const isChanged = (changedId, changedItem) => {
+        const index = changedRows.findIndex(item => item.id === changedId)
+        if (index !== -1) {
+            if (JSON.stringify(Object.assign(changedRows[index], changedItem)) === JSON.stringify(rows.find(item => item.id === changedId)))
+                setChangedRows([
+                    ...changedRows.slice(0, index),
+                    ...changedRows.slice(index + 1)
+                ])
+            else
+                setChangedRows([
+                    ...changedRows.slice(0, index),
+                    Object.assign(changedRows[index], changedItem),
+                    ...changedRows.slice(index + 1)
+                ])
+        } else {
+            setChangedRows([
+                ...changedRows,
+                Object.assign({ ...rows.find(item => item.id === changedId) }, changedItem),
+            ])
+        }
+    }
+
+    const handleSaveClick = () => {
+        if (changedRows.length !== 0)
+            console.log(changedRows)
+    }
+
     return (
         <AdminLayout>
             <div className={classes.topMenu}>
                 <Typography variant="h6">مدیریت موجودی و قیمت ها</Typography>
-                <Button variant="contained" color="secondary">ذخیره</Button>
+                <Button variant="contained" color="secondary" onClick={handleSaveClick}>ذخیره</Button>
             </div>
 
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
@@ -114,10 +144,10 @@ const ProductQuantityPage = ({ getProducts, startLoading, admin: { products, tot
                             <TableRow key={row.id}>
                                 <TableCell align="left" style={{ width: "60%" }} size='small'><RouterLink to={`/shop/product/${row.id}`} color="inherit">{row.name}</RouterLink></TableCell>
                                 <TableCell align="left" style={{ width: "20%" }}>
-                                    <EditText value={row.price} />
+                                    <EditText id={row.id} type="price" itemValue={row.price} isChanged={isChanged} />
                                 </TableCell>
                                 <TableCell align="left" style={{ width: "20%" }}>
-                                    <EditText value={row.quantity} />
+                                    <EditText id={row.id} type="quantity" itemValue={row.quantity} isChanged={isChanged} />
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -145,5 +175,5 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, {
-    getProducts, startLoading
+    getProducts, startLoading, updateProductsQuantity
 })(ProductQuantityPage)

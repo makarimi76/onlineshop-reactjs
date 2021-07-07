@@ -3,17 +3,18 @@ import { useState } from 'react'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 
-const EditText = ({ value }) => {
+const EditText = ({ id, type, itemValue, isChanged }) => {
 
-    const [input, setInput] = useState(value)
+    const [input, setInput] = useState(itemValue)
     const [mode, setMode] = useState('text')
 
     const handelClick = (action) => {
         setMode(action)
     }
 
-    const handelChange = (e) => {
-        setInput(e.target.value)
+    const handelChange = ({ target: { name, value } }) => {
+        setInput(value)
+        isChanged(id, { [name]: value })
     }
 
     return (
@@ -21,8 +22,8 @@ const EditText = ({ value }) => {
             {mode === 'text' ?
                 <Button
                     onClick={() => handelClick('edit')}
+                    size="large"
                     fullWidth
-                    color={value !== input ? 'primary' : 'inherit'}
                 >
                     {input}
                 </Button>
@@ -34,7 +35,8 @@ const EditText = ({ value }) => {
                     size="small"
                     color="secondary"
                     onChange={handelChange}
-                    onBlur={() => handelClick('text')}
+                    name={type}
+                    {...(itemValue === input && { onBlur: () => handelClick('text') })}
                     value={input}
                     autoFocus />
             }

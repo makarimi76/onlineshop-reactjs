@@ -42,7 +42,7 @@ server.use(jsonServer.bodyParser)
 // 2- (do it in next middleware)
 const imageFieldUploadMiddleware = upload.single('image')
 server.use((req, res, next) => {
-  if (req.method === 'POST' && req.headers['content-type'] != 'application/json') {
+  if ((req.method === 'POST' || req.method === 'PATCH') && req.headers['content-type'] != 'application/json') {
     imageFieldUploadMiddleware(req, res, next)
   } else {
     next()

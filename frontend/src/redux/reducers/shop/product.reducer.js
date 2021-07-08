@@ -1,12 +1,14 @@
 import {
     INITIAL_CATEGORIZED_PRODUCTS_SHOP,
     GET_CATEGORIZED_PRODUCTS_SHOP,
+    GET_PRODUCTS_BY_CATEGORY_SHOP,
     START_PRODUCT_LOADING_SHOP,
     PRODUCT_ERROR_SHOP
 } from 'redux/actions/shop/types'
 
 const initialState = {
     categorizedProducts: {},
+    products: [],
     limitCategorizedProducts: 10,
     loading: true,
     getProducts: false,
@@ -33,6 +35,12 @@ export default function product(state = initialState, action) {
             return {
                 ...state,
                 categorizedProducts: { ...state.categorizedProducts, [payload.slug]: payload.data },
+                loading: false
+            }
+        case GET_PRODUCTS_BY_CATEGORY_SHOP:
+            return {
+                ...state,
+                products: payload,
                 loading: false
             }
         case START_PRODUCT_LOADING_SHOP:

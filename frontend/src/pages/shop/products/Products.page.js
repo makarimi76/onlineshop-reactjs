@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
@@ -34,7 +34,7 @@ const ProductsPage = ({ match, category: { categories, categoryName }, product: 
     useEffect(() => {
         if (categories.length === 0)
             getCategories()
-    }, [getCategories, categories])
+    }, [categories])
 
     useEffect(() => {
         const findCategory = categories.find(item => item.slug === match.params.category)

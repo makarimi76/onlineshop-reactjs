@@ -37,9 +37,9 @@ const ProductsPage = ({ match, category: { categories, categoryName }, product: 
     }, [categories])
 
     useEffect(() => {
-        const findCategory = categories.find(item => item.slug === match.params.category)
-        setCategoryName(findCategory)
         if (categories.length !== 0) {
+            const findCategory = categories.find(item => item.slug === match.params.category)
+            setCategoryName(findCategory.name)
             startProductLoading()
             getProductsByCategory(findCategory.name, 1, 10)
         }
@@ -48,7 +48,7 @@ const ProductsPage = ({ match, category: { categories, categoryName }, product: 
     return (
         <ProductsLayout side={<Categories />}>
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
-                [<Typography key="titel" variant="h5">کالا های گروه {categoryName.name.replace('کالاهای', '')}</Typography>,
+                [<Typography key="titel" variant="h5">کالا های گروه {categoryName.replace('کالاهای', '')}</Typography>,
                 <Grid key="content" container spacing={3} className={classes.box}>
                     {products.map(item => (
                         <Grid key={item.id} item xs={12} sm={6} md={6} lg={4} >

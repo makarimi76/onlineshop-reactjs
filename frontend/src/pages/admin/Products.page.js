@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductsPage = ({ getProducts, startLoading, product: { products, totalCount, loading } }) => {
+const ProductsPage = ({ getProducts, startLoading, product: { products, totalCount, newProduct, loading } }) => {
 
     const classes = useStyles()
 
@@ -79,7 +79,7 @@ const ProductsPage = ({ getProducts, startLoading, product: { products, totalCou
     useEffect(() => {
         startLoading()
         getProducts(page, rowsPerPage)
-    }, [startLoading, getProducts, page, rowsPerPage])
+    }, [startLoading, getProducts, page, rowsPerPage, newProduct])
 
     const handleChangePage = (e, newPage) => {
         setPage(newPage);

@@ -53,7 +53,7 @@ const ProductsItem = ({ product: { id, name, image, price } }) => {
         <div className={classes.cart}>
             <RouterLink to={`/shop/product/${id}`} color="inherit">
                 <Grid container>
-                    <Grid xs={5}>
+                    <Grid item xs={5}>
                         <Avatar variant="rounded" src={image} className={classes.image} >
                             {!image && 'No Image'}
                         </Avatar>

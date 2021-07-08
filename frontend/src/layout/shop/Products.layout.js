@@ -1,5 +1,3 @@
-import React from 'react'
-
 // Components
 import Header from 'layout/shop/components/Header'
 import Footer from 'layout/shop/components/Footer'

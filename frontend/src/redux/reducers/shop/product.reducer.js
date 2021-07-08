@@ -9,6 +9,7 @@ const initialState = {
     categorizedProducts: {},
     limitCategorizedProducts: 10,
     loading: true,
+    getProducts: false,
     error: null
 }
 
@@ -24,7 +25,8 @@ export default function product(state = initialState, action) {
             })
             return {
                 ...state,
-                categorizedProducts: { ...initCategorizedProducts }
+                categorizedProducts: { ...initCategorizedProducts },
+                getProducts: true
             }
         }
         case GET_CATEGORIZED_PRODUCTS_SHOP:

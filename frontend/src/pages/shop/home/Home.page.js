@@ -33,7 +33,6 @@ const HomePage = ({ category: { categories, loading }, product: { categorizedPro
 
     const classes = useStyles()
 
-    console.log()
     useEffect(() => {
         if (categories.length === 0)
             getCategories()

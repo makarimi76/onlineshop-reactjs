@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const CategorizedProducts = ({ category: { name, slug }, product: { categorizedProducts, limitCategorizedProducts, loading }, getCategorizedProducts }) => {
+const CategorizedProducts = ({ category: { name, slug }, product: { categorizedProducts, limitCategorizedProducts, loading, getProducts }, getCategorizedProducts }) => {
 
     const classes = useStyles()
 
     useEffect(() => {
-        if (!categorizedProducts[slug])
+        if (categorizedProducts[slug] && categorizedProducts[slug].length === 0 && getProducts)
             getCategorizedProducts(name, slug, limitCategorizedProducts)
-    }, [getCategorizedProducts])
+    }, [getProducts])
 
     return (loading ? <div className={classes.spinner}><CircularProgress /></div> :
         <Grid container spacing={3} className={classes.box}>
@@ -48,7 +48,7 @@ const CategorizedProducts = ({ category: { name, slug }, product: { categorizedP
 
 
 const mapStateToProps = ({ shop }) => ({
-    product: shop.product
+    product: shop.product,
 })
 
 export default connect(mapStateToProps, {

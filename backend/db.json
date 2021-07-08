@@ -5,7 +5,8 @@
       "parentId": 0,
       "slug": "groceries",
       "name": "کالاهای اساسی و خوار و بار",
-      "subset": true
+      "subset": true,
+      "isShowHome": true
     },
     {
       "id": 101,
@@ -33,7 +34,8 @@
       "parentId": 0,
       "slug": "dairy",
       "name": "لبنیات",
-      "subset": true
+      "subset": true,
+      "isShowHome": true
     },
     {
       "id": 201,
@@ -59,9 +61,9 @@
         "حبوبات و سویا"
       ],
       "price": "38900",
-      "quantity": "10",
+      "quantity": "12",
       "image": "/files/540fd0d556cfe4202c699495942dc0ce",
-      "createdAt": 1624224251763,
+      "createdAt": "1624224251763",
       "id": 1
     },
     {
@@ -71,10 +73,10 @@
         "کالاهای اساسی و خوار و بار",
         "برنج"
       ],
-      "price": "245000",
+      "price": "244997",
       "quantity": "5",
       "image": "/files/26f78d9e90271e13838da1450233459c",
-      "createdAt": 1624225458767,
+      "createdAt": "1624225458767",
       "id": 2
     },
     {
@@ -166,19 +168,6 @@
       "image": "/files/d3b807b0c2e10525eee7e6f1c1908bc4",
       "createdAt": 1624226320455,
       "id": 9
-    },
-    {
-      "name": "asdadad",
-      "description": "aaaaaa",
-      "categories": [
-        "کالاهای اساسی و خوار و بار",
-        "حبوبات و سویا"
-      ],
-      "image": "[object Object]",
-      "price": "2222",
-      "quantity": "11",
-      "createdAt": 1625312458066,
-      "id": 10
     }
   ],
   "orders": [

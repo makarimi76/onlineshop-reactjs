@@ -1,11 +1,61 @@
-import ShopLayout from 'layout/shop/Shop.layout'
+import { useEffect } from 'react'
+import { connect } from 'react-redux'
 
-const HomePage = () => {
+// Redux
+import { getCategories } from 'redux/actions/shop/category.action'
+
+// Componnets
+import ShopLayout from 'layout/shop/Shop.layout'
+import CategorizedProducts from 'pages/shop/home/CategorizedProducts'
+
+// UI
+import { makeStyles } from '@material-ui/core/styles'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Typography from '@material-ui/core/Typography'
+
+const useStyles = makeStyles((theme) => ({
+    spinner: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    box: {
+        [theme.breakpoints.up('md')]: {
+            margin: theme.spacing(4)
+        },
+        [theme.breakpoints.down('md')]: {
+            marginBottom: theme.spacing(2)
+        }
+    }
+}))
+
+const HomePage = ({ category: { categories, loading }, product: { categorizedProducts }, getCategories }) => {
+
+    const classes = useStyles()
+
+    console.log()
+    useEffect(() => {
+        getCategories()
+    }, [getCategories])
+
     return (
         <ShopLayout>
-            Home Page
-        </ShopLayout>
+            {loading ? <div className={classes.spinner}><CircularProgress /></div> :
+                categories.map(category => category.isShowHome &&
+                    <div key={category.id} className={classes.box} >
+                        <Typography variant="h6">کالا های گروه {category.name.replace('کالاهای', '')}</Typography>
+                        <CategorizedProducts category={category} />
+                    </div>
+                )
+            }
+        </ShopLayout >
     )
 }
 
-export default HomePage
+const mapStateToProps = ({ shop }) => ({
+    category: shop.category,
+    product: shop.product
+})
+
+export default connect(mapStateToProps, {
+    getCategories
+})(HomePage)

@@ -3,8 +3,10 @@ import axios from 'axios'
 import {
     GET_CATEGORIES,
     START_CATEGORY_LOADING,
-    CATEGORY_ERROR
-} from "redux/actions/admin/types"
+    CATEGORY_ERROR,
+    INITIAL_CATEGORIZED_PRODUCTS
+
+} from "redux/actions/shop/types"
 
 // Get Categories
 export const getCategories = () => async dispatch => {
@@ -13,6 +15,11 @@ export const getCategories = () => async dispatch => {
 
         dispatch({
             type: GET_CATEGORIES,
+            payload: res.data
+        })
+
+        dispatch({
+            type: INITIAL_CATEGORIZED_PRODUCTS,
             payload: res.data
         })
 

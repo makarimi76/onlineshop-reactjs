@@ -1,8 +1,8 @@
 import {
-    INITIAL_CATEGORIZED_PRODUCTS,
-    GET_CATEGORIZED_PRODUCTS,
-    START_PRODUCT_LOADING,
-    PRODUCT_ERROR
+    INITIAL_CATEGORIZED_PRODUCTS_SHOP,
+    GET_CATEGORIZED_PRODUCTS_SHOP,
+    START_PRODUCT_LOADING_SHOP,
+    PRODUCT_ERROR_SHOP
 } from 'redux/actions/shop/types'
 
 const initialState = {
@@ -16,7 +16,7 @@ export default function product(state = initialState, action) {
     const { type, payload } = action
 
     switch (type) {
-        case INITIAL_CATEGORIZED_PRODUCTS: {
+        case INITIAL_CATEGORIZED_PRODUCTS_SHOP: {
             const initCategorizedProducts = {}
             payload.forEach(item => {
                 if (item.isShowHome)
@@ -27,18 +27,18 @@ export default function product(state = initialState, action) {
                 categorizedProducts: { ...initCategorizedProducts }
             }
         }
-        case GET_CATEGORIZED_PRODUCTS:
+        case GET_CATEGORIZED_PRODUCTS_SHOP:
             return {
                 ...state,
                 categorizedProducts: { ...state.categorizedProducts, [payload.slug]: payload.data },
                 loading: false
             }
-        case START_PRODUCT_LOADING:
+        case START_PRODUCT_LOADING_SHOP:
             return {
                 ...state,
                 loading: true
             }
-        case PRODUCT_ERROR:
+        case PRODUCT_ERROR_SHOP:
             return {
                 ...state,
                 error: payload,

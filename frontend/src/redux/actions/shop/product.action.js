@@ -1,9 +1,9 @@
 import axiosInstance from "utils/axios"
 
 import {
-    GET_CATEGORIZED_PRODUCTS,
-    START_PRODUCT_LOADING,
-    PRODUCT_ERROR
+    GET_CATEGORIZED_PRODUCTS_SHOP,
+    START_PRODUCT_LOADING_SHOP,
+    PRODUCT_ERROR_SHOP
 } from "redux/actions/shop/types"
 
 // Get Categories
@@ -12,13 +12,13 @@ export const getCategorizedProducts = (name, slug, limit) => async dispatch => {
         const res = await axiosInstance.get(`/products?categories_like=${name}&_limit=${limit}`)
 
         dispatch({
-            type: GET_CATEGORIZED_PRODUCTS,
+            type: GET_CATEGORIZED_PRODUCTS_SHOP,
             payload: { data: res.data, slug }
         })
 
     } catch (err) {
         dispatch({
-            type: PRODUCT_ERROR,
+            type: PRODUCT_ERROR_SHOP,
             payload: err
         })
     }

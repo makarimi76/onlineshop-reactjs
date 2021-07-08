@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 import {
-    GET_CATEGORIES,
-    START_CATEGORY_LOADING,
-    CATEGORY_ERROR,
-    INITIAL_CATEGORIZED_PRODUCTS
+    GET_CATEGORIES_SHOP,
+    START_CATEGORY_LOADING_SHOP,
+    CATEGORY_ERROR_SHOP,
+    INITIAL_CATEGORIZED_PRODUCTS_SHOP
 
 } from "redux/actions/shop/types"
 
@@ -14,18 +14,18 @@ export const getCategories = () => async dispatch => {
         const res = await axios.get('/categories')
 
         dispatch({
-            type: GET_CATEGORIES,
+            type: GET_CATEGORIES_SHOP,
             payload: res.data
         })
 
         dispatch({
-            type: INITIAL_CATEGORIZED_PRODUCTS,
+            type: INITIAL_CATEGORIZED_PRODUCTS_SHOP,
             payload: res.data
         })
 
     } catch (err) {
         dispatch({
-            type: CATEGORY_ERROR,
+            type: CATEGORY_ERROR_SHOP,
             payload: err
         })
     }
@@ -34,6 +34,6 @@ export const getCategories = () => async dispatch => {
 // Start Loading
 export const startCategoryLoading = () => dispatch => {
     dispatch({
-        type: START_CATEGORY_LOADING
+        type: START_CATEGORY_LOADING_SHOP
     })
 }

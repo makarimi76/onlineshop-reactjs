@@ -1,7 +1,7 @@
 import {
-    GET_CATEGORIES,
-    START_CATEGORY_LOADING,
-    CATEGORY_ERROR
+    GET_CATEGORIES_SHOP,
+    START_CATEGORY_LOADING_SHOP,
+    CATEGORY_ERROR_SHOP
 } from 'redux/actions/shop/types'
 
 const initialState = {
@@ -14,18 +14,18 @@ export default function category(state = initialState, action) {
     const { type, payload } = action
 
     switch (type) {
-        case GET_CATEGORIES:
+        case GET_CATEGORIES_SHOP:
             return {
                 ...state,
                 categories: payload,
                 loading: false
             }
-        case START_CATEGORY_LOADING:
+        case START_CATEGORY_LOADING_SHOP:
             return {
                 ...state,
                 loading: true
             }
-        case CATEGORY_ERROR:
+        case CATEGORY_ERROR_SHOP:
             return {
                 ...state,
                 error: payload,

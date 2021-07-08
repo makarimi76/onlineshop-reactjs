@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProduct, addProduct } from 'redux/actions/admin/product.action'
+import { getProduct, addProduct, updateProduct } from 'redux/actions/admin/product.action'
 import { getCategories, startCategoryLoading } from 'redux/actions/admin/category.action'
 
 // Utils
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ManageProduct = ({ options: { open, type, title, id }, setOptions, getProduct, addProduct, getCategories, startCategoryLoading, product: { product, modalLoading }, category: { categories, loading } }) => {
+const ManageProduct = ({ options: { open, type, title, id }, setOptions, getProduct, addProduct, updateProduct, getCategories, startCategoryLoading, product: { product }, category: { categories, loading } }) => {
 
     const theme = useTheme()
     const classes = useStyles()
@@ -103,14 +103,27 @@ const ManageProduct = ({ options: { open, type, title, id }, setOptions, getProd
     }
 
     const handleClose = () => {
-        setOptions({ open: false, title: '' })
+        setOptions({
+            open: false,
+            type: undefined,
+            title: undefined,
+            id: undefined
+        })
     }
 
     const handleSubmit = () => {
         console.log(formData)
         if (productValidation(formData, formData, errors, setErrors)) {
-            setOptions({ open: false, title: '' })
-            addProduct(formData)
+            setOptions({
+                open: false,
+                type: undefined,
+                title: undefined,
+                id: undefined
+            })
+            if (type === 'new')
+                addProduct(formData)
+            else
+                updateProduct(formData)
         }
     }
 
@@ -265,5 +278,5 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, {
-    getProduct, addProduct, getCategories, startCategoryLoading
+    getProduct, addProduct, updateProduct, getCategories, startCategoryLoading
 })(ManageProduct)

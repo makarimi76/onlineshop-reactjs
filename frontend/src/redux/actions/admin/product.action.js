@@ -71,7 +71,6 @@ export const addProduct = formData => async dispatch => {
     try {
         const res = await axiosInstance.post('/products', body, config)
 
-        console.log(res)
         dispatch({
             type: ADD_PRODUCT,
             payload: res.data
@@ -108,7 +107,34 @@ export const updateProduct = formData => async dispatch => {
     try {
         const res = await axiosInstance.patch(`/products/${formData.id}`, body, config)
 
+        dispatch({
+            type: ADD_PRODUCT,
+            payload: res.data
+        })
+
         dispatch(setAlert(`کالا ${res.data.id} با موفقیت بروزرسانی شد`, 'success'))
+
+    } catch (err) {
+        dispatch({
+            type: PRODUCT_ERROR,
+            payload: err
+        })
+    }
+}
+
+// Remove Product
+export const removeProduct = id => async dispatch => {
+
+    try {
+        const res = await axiosInstance.delete(`/products/${id}`)
+
+        dispatch({
+            type: ADD_PRODUCT,
+            payload: res.data
+        })
+
+        dispatch(setAlert(`کالا ${id} با موفقیت حذف شد`, 'danger'))
+
     } catch (err) {
         dispatch({
             type: PRODUCT_ERROR,

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProducts, startLoading } from 'redux/actions/admin/product.action'
+import { getProducts, removeProduct, startLoading } from 'redux/actions/admin/product.action'
 
 // Components
 import RouterLink from 'components/RouterLink'
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductsPage = ({ getProducts, startLoading, product: { products, totalCount, newProduct, loading } }) => {
+const ProductsPage = ({ getProducts, removeProduct, startLoading, product: { products, totalCount, newProduct, loading } }) => {
 
     const classes = useStyles()
 
@@ -99,6 +99,11 @@ const ProductsPage = ({ getProducts, startLoading, product: { products, totalCou
 
     const handleManageProduct = (type, title, id) => {
         setManageProduct({ open: true, type, title, id })
+    }
+
+    const handleRemoveClick = (id, name) => {
+        if (window.confirm(`آیا می خواهید ${name} را حذف کنید؟`))
+            removeProduct(id)
     }
 
     return (
@@ -155,6 +160,7 @@ const ProductsPage = ({ getProducts, startLoading, product: { products, totalCou
                                     <Button
                                         color="primary"
                                         startIcon={<IoMdTrash />}
+                                        onClick={() => handleRemoveClick(row.id, row.name)}
                                     >حذف</Button>
                                 </TableCell>
                             </TableRow>
@@ -183,5 +189,5 @@ const mapStateToProps = ({ admin }) => ({
 })
 
 export default connect(mapStateToProps, {
-    getProducts, startLoading
+    getProducts, removeProduct, startLoading
 })(ProductsPage)

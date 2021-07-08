@@ -122,6 +122,27 @@ export const updateProduct = formData => async dispatch => {
     }
 }
 
+// Remove Product
+export const removeProduct = id => async dispatch => {
+
+    try {
+        const res = await axiosInstance.delete(`/products/${id}`)
+
+        dispatch({
+            type: ADD_PRODUCT,
+            payload: res.data
+        })
+
+        dispatch(setAlert(`کالا ${id} با موفقیت حذف شد`, 'danger'))
+
+    } catch (err) {
+        dispatch({
+            type: PRODUCT_ERROR,
+            payload: err
+        })
+    }
+}
+
 // Add Changed Product
 export const addChangedProduct = (id, item) => dispatch => {
     dispatch({

@@ -34,8 +34,9 @@ const HomePage = ({ category: { categories, loading }, product: { categorizedPro
 
     console.log()
     useEffect(() => {
-        getCategories()
-    }, [getCategories])
+        if (categories.length === 0)
+            getCategories()
+    }, [getCategories, categories])
 
     return (
         <ShopLayout>

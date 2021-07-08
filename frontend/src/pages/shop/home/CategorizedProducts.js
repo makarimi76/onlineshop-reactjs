@@ -28,8 +28,9 @@ const CategorizedProducts = ({ category: { name, slug }, product: { categorizedP
     const classes = useStyles()
 
     useEffect(() => {
-        getCategorizedProducts(name, slug, limitCategorizedProducts)
-    }, [])
+        if (!categorizedProducts[slug])
+            getCategorizedProducts(name, slug, limitCategorizedProducts)
+    }, [getCategorizedProducts])
 
     return (loading ? <div className={classes.spinner}><CircularProgress /></div> :
         <Grid container spacing={3} className={classes.box}>

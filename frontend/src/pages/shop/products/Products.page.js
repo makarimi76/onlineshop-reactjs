@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getCategories } from 'redux/actions/shop/category.action'
+import { getCategories, setCategoryName } from 'redux/actions/shop/category.action'
 import { getProductsByCategory, startProductLoading } from 'redux/actions/shop/product.action'
 
 //Componnets
@@ -27,20 +27,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductsPage = ({ match, category: { categories }, product: { products, loading }, getCategories, getProductsByCategory, startProductLoading }) => {
+const ProductsPage = ({ match, category: { categories, categoryName }, product: { products, loading }, getCategories, setCategoryName, getProductsByCategory, startProductLoading }) => {
 
     const classes = useStyles()
 
-    const [category, setCategoty] = useState(null)
     useEffect(() => {
         if (categories.length === 0)
             getCategories()
     }, [getCategories, categories])
 
-
     useEffect(() => {
         const findCategory = categories.find(item => item.slug === match.params.category)
-        setCategoty(findCategory)
+        setCategoryName(findCategory)
         if (categories.length !== 0) {
             startProductLoading()
             getProductsByCategory(findCategory.name, 1, 10)
@@ -50,8 +48,8 @@ const ProductsPage = ({ match, category: { categories }, product: { products, lo
     return (
         <ProductsLayout side={<Categories />}>
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
-                [<Typography variant="h5">کالا های گروه {category.name.replace('کالاهای', '')}</Typography>,
-                <Grid container spacing={3} className={classes.box}>
+                [<Typography key="titel" variant="h5">کالا های گروه {categoryName.name.replace('کالاهای', '')}</Typography>,
+                <Grid key="content" container spacing={3} className={classes.box}>
                     {products.map(item => (
                         <Grid key={item.id} item xs={12} sm={6} md={6} lg={4} >
                             <ProductItem product={item} />
@@ -70,5 +68,5 @@ const mapStateToProps = ({ shop }) => ({
 })
 
 export default connect(mapStateToProps, {
-    getCategories, getProductsByCategory, startProductLoading
+    getCategories, setCategoryName, getProductsByCategory, startProductLoading
 })(ProductsPage)

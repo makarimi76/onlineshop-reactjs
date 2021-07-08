@@ -1,11 +1,13 @@
 import {
     GET_CATEGORIES_SHOP,
     START_CATEGORY_LOADING_SHOP,
+    SET_CATEGORY_NAME_SHOP,
     CATEGORY_ERROR_SHOP
 } from 'redux/actions/shop/types'
 
 const initialState = {
     categories: [],
+    categoryName: '',
     loading: true,
     error: null
 }
@@ -24,6 +26,12 @@ export default function category(state = initialState, action) {
             return {
                 ...state,
                 loading: true
+            }
+        case SET_CATEGORY_NAME_SHOP:
+            return {
+                ...state,
+                categoryName: payload
+
             }
         case CATEGORY_ERROR_SHOP:
             return {

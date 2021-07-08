@@ -3,6 +3,7 @@ import axios from 'axios'
 import {
     GET_CATEGORIES_SHOP,
     START_CATEGORY_LOADING_SHOP,
+    SET_CATEGORY_NAME_SHOP,
     CATEGORY_ERROR_SHOP,
     INITIAL_CATEGORIZED_PRODUCTS_SHOP
 
@@ -29,6 +30,14 @@ export const getCategories = () => async dispatch => {
             payload: err
         })
     }
+}
+
+// Set Category Name
+export const setCategoryName = (category) => dispatch => {
+    dispatch({
+        type: SET_CATEGORY_NAME_SHOP,
+        payload: category
+    })
 }
 
 // Start Loading

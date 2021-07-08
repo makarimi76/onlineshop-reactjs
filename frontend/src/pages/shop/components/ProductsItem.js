@@ -1,5 +1,8 @@
 import React from 'react'
 
+// Components
+import RouterLink from 'components/RouterLink'
+
 // UI
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
@@ -48,21 +51,20 @@ const ProductsItem = ({ product: { id, name, image, price } }) => {
 
     return (
         <div className={classes.cart}>
-            <Grid container>
-                <Grid xs={5}>
-                    <Avatar variant="rounded" src={image} className={classes.image} >
-                        {!image && 'No Image'}
-                    </Avatar>
-                    {/* <div style={{ position: "inline-block", width: "100%", height: 0, paddingBottom: "100%", borderRadius: 5 }}>
-                        <img src={image} style={{ width: "100%", height: "100%", borderRadius: 5 }} alt={name} />
-                    </div> */}
-                </Grid>
-                <Grid item xs={7} className={classes.details}>
-                    <Typography variant="body2">{name}</Typography>
-                    <Typography variant="body1" >{price} تومان</Typography>
+            <RouterLink to={`/shop/product/${id}`} color="inherit">
+                <Grid container>
+                    <Grid xs={5}>
+                        <Avatar variant="rounded" src={image} className={classes.image} >
+                            {!image && 'No Image'}
+                        </Avatar>
+                    </Grid>
+                    <Grid item xs={7} className={classes.details}>
+                        <Typography variant="body2">{name}</Typography>
+                        <Typography variant="body1" >{price} تومان</Typography>
 
+                    </Grid>
                 </Grid>
-            </Grid>
+            </RouterLink>
         </div>
     )
 }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { getCategories } from 'redux/actions/shop/category.action'
 
 // Componnets
+import RouterLink from 'components/RouterLink'
 import ShopLayout from 'layout/shop/Shop.layout'
 import CategorizedProducts from 'pages/shop/home/CategorizedProducts'
 
@@ -43,7 +44,9 @@ const HomePage = ({ category: { categories, loading }, product: { categorizedPro
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                 categories.map(category => category.isShowHome &&
                     <div key={category.id} className={classes.box} >
-                        <Typography variant="h6">کالا های گروه {category.name.replace('کالاهای', '')}</Typography>
+                        <RouterLink to={`/shop/products/${category.slug}`} color="inherit">
+                            <Typography variant="h6">کالا های گروه {category.name.replace('کالاهای', '')}</Typography>
+                        </RouterLink>
                         <CategorizedProducts category={category} />
                     </div>
                 )

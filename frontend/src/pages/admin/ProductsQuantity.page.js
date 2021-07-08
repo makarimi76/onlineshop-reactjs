@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProductsQuantity } from 'redux/actions/admin/product.action'
+import { getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProduct } from 'redux/actions/admin/product.action'
 
 // Components
 import RouterLink from 'components/RouterLink'
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductQuantityPage = ({
     product: { products, totalCount, changedProducts, loading },
-    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProductsQuantity }) => {
+    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProduct }) => {
 
     const classes = useStyles()
 
@@ -66,9 +66,11 @@ const ProductQuantityPage = ({
 
     // Get Products
     useEffect(() => {
-        startLoading()
-        getProducts(page, rowsPerPage)
-    }, [startLoading, getProducts, page, rowsPerPage])
+        if (changedProducts.length === 0) {
+            startLoading()
+            getProducts(page, rowsPerPage)
+        }
+    }, [startLoading, getProducts, page, rowsPerPage, changedProducts])
 
     // If Price or Quantity changed
     const isChanged = (changedId, changedItem) => {
@@ -97,7 +99,10 @@ const ProductQuantityPage = ({
     const handleSaveClick = () => {
         console.log(changedProducts)
         if (changedProducts.length !== 0)
-            updateProductsQuantity(changedProducts)
+            changedProducts.forEach(async (item) => {
+                await updateProduct(item)
+                removeChangedProduct(0)
+            })
     }
 
     return (
@@ -157,5 +162,5 @@ const mapStateToProps = ({ admin }) => ({
 })
 
 export default connect(mapStateToProps, {
-    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProductsQuantity
+    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProduct
 })(ProductQuantityPage)

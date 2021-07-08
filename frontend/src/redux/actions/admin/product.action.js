@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axiosInstance from 'utils/axios'
 import { setAlert } from 'redux/actions/alert.action'
 
 import {
@@ -15,7 +15,7 @@ import {
 // Get Products
 export const getProducts = (page, rowsPerPage) => async dispatch => {
     try {
-        const res = await axios.get(`/products?_page=${page + 1}&_limit=${rowsPerPage}`)
+        const res = await axiosInstance.get(`/products?_page=${page + 1}&_limit=${rowsPerPage}`)
 
         dispatch({
             type: GET_PRODUCTS,
@@ -35,7 +35,7 @@ export const getProducts = (page, rowsPerPage) => async dispatch => {
 // Get Product
 export const getProduct = (id) => async dispatch => {
     try {
-        const res = await axios.get(`/products/${id}`)
+        const res = await axiosInstance.get(`/products/${id}`)
 
         dispatch({
             type: GET_PRODUCT,
@@ -69,7 +69,7 @@ export const addProduct = formData => async dispatch => {
     })
 
     try {
-        const res = await axios.post('/products', body, config)
+        const res = await axiosInstance.post('/products', body, config)
 
         console.log(res)
         dispatch({
@@ -80,7 +80,36 @@ export const addProduct = formData => async dispatch => {
         dispatch(setAlert(`کالا ${res.data.id} با موفقیت اضافه شد`, 'success'))
 
     } catch (err) {
+        dispatch({
+            type: PRODUCT_ERROR,
+            payload: err
+        })
+    }
+}
 
+// Update Product
+export const updateProduct = formData => async dispatch => {
+
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>'
+        }
+    }
+
+    const body = new FormData()
+    Object.keys(formData).forEach(key => {
+        if (key === 'categories') {
+            formData.categories.forEach((item) => body.append(key, item))
+        } else {
+            body.append(key, formData[key])
+        }
+    })
+
+    try {
+        const res = await axiosInstance.patch(`/products/${formData.id}`, body, config)
+
+        dispatch(setAlert(`کالا ${res.data.id} با موفقیت بروزرسانی شد`, 'success'))
+    } catch (err) {
         dispatch({
             type: PRODUCT_ERROR,
             payload: err
@@ -110,79 +139,6 @@ export const removeChangedProduct = (index) => dispatch => {
         type: REMOVE_CHANGED_PRODUCT,
         payload: index
     })
-}
-
-// Update Products Quantity
-export const updateProductsQuantity = changedData => async dispatch => {
-
-    console.log(changedData)
-
-    const config = {
-        headers: {
-            'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>'
-        }
-    }
-
-    changedData.forEach(async item => {
-        const body = new FormData()
-        Object.keys(item).forEach(key => {
-            if (key === 'categories') {
-                item.categories.forEach((item) => body.append(key, item))
-            } else {
-                body.append(key, item[key])
-            }
-        })
-
-        try {
-            const res = await axios.patch(`/products/${item.id}`, body, config)
-
-            console.log(res)
-            // dispatch({
-            //     type: ADD_PRODUCT,
-            //     payload: res.data
-            // })
-
-            // dispatch(setAlert(`کالا ${res.data.id} با موفقیت اضافه شد`, 'success'))
-
-        } catch (err) {
-
-            dispatch({
-                type: PRODUCT_ERROR,
-                payload: err
-            })
-        }
-    })
-
-    console.log(changedData)
-
-    // const body = new FormData()
-
-    // Object.keys(formData).forEach(key => {
-    //     if (key === 'categories') {
-    //         formData.categories.forEach((item) => body.append(key, item))
-    //     } else {
-    //         body.append(key, formData[key])
-    //     }
-    // })
-
-    // try {
-    //     const res = await axios.post('/products', body, config)
-
-    //     console.log(res)
-    //     dispatch({
-    //         type: ADD_PRODUCT,
-    //         payload: res.data
-    //     })
-
-    //     dispatch(setAlert(`کالا ${res.data.id} با موفقیت اضافه شد`, 'success'))
-
-    // } catch (err) {
-
-    //     dispatch({
-    //         type: PRODUCT_ERROR,
-    //         payload: err
-    //     })
-    // }
 }
 
 // Start Loading

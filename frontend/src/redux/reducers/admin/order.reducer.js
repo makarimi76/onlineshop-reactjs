@@ -11,7 +11,7 @@ const initialState = {
     error: null
 }
 
-export default function product(state = initialState, action) {
+export default function order(state = initialState, action) {
     const { type, payload } = action
 
     switch (type) {

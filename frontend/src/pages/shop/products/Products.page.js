@@ -1,10 +1,13 @@
 import React from 'react'
 
+//Componnets
+import ProductsLayout from 'layout/shop/Products.layout'
+
 const ProductsPage = ({ match }) => {
     return (
-        <div>
+        <ProductsLayout>
             {match.params.category} Products Page
-        </div>
+        </ProductsLayout>
     )
 }
 

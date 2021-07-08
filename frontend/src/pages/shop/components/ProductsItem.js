@@ -61,7 +61,6 @@ const ProductsItem = ({ product: { id, name, image, price } }) => {
                     <Grid item xs={7} className={classes.details}>
                         <Typography variant="body2">{name}</Typography>
                         <Typography variant="body1" >{price} تومان</Typography>
-
                     </Grid>
                 </Grid>
             </RouterLink>

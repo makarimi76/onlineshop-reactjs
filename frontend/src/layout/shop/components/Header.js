@@ -1,4 +1,7 @@
+// Components
 import RouterLink from 'components/RouterLink'
+
+// UI
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -54,7 +57,9 @@ const Header = () => {
         <AppBar position="sticky">
             <Toolbar>
                 <Typography variant="h6" className={classes.title}>
-                    فروشگاه
+                    <RouterLink to='/'>
+                        فروشگاه
+                    </RouterLink>
                 </Typography>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>

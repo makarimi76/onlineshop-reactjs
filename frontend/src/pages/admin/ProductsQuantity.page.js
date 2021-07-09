@@ -70,7 +70,7 @@ const ProductQuantityPage = ({
             startLoading()
             getProducts(page, rowsPerPage)
         }
-    }, [startLoading, getProducts, page, rowsPerPage, changedProducts])
+    }, [page, rowsPerPage, changedProducts])
 
     // If Price or Quantity changed
     const isChanged = (changedId, changedItem) => {
@@ -97,7 +97,6 @@ const ProductQuantityPage = ({
     }
 
     const handleSaveClick = () => {
-        console.log(changedProducts)
         if (changedProducts.length !== 0)
             changedProducts.forEach(async (item) => {
                 await updateProduct(item)
@@ -109,7 +108,9 @@ const ProductQuantityPage = ({
         <AdminLayout>
             <div className={classes.topMenu}>
                 <Typography variant="h6">مدیریت موجودی و قیمت ها</Typography>
-                <Button variant="contained" color="secondary" onClick={handleSaveClick}>ذخیره</Button>
+                <Button variant="contained" color="secondary" onClick={handleSaveClick}
+                    {...(changedProducts.length === 0 && { disabled: true })}
+                >ذخیره</Button>
             </div>
 
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :

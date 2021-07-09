@@ -1,10 +1,11 @@
-import React from 'react'
+// Components
+import ShopLayout from 'layout/shop/Shop.layout'
 
 const ProductPage = ({ match }) => {
     return (
-        <div>
+        <ShopLayout maxWidth='md'>
             {match.params.id} Product Page
-        </div>
+        </ShopLayout>
     )
 }
 

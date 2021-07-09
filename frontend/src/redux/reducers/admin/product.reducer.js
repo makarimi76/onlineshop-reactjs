@@ -1,7 +1,7 @@
 import {
     GET_PRODUCTS,
     GET_PRODUCT,
-    ADD_PRODUCT,
+    NEW_PRODUCT,
     ADD_CHANGED_PRODUCT,
     UPDATE_CHANGED_PRODUCT,
     REMOVE_CHANGED_PRODUCT,
@@ -15,6 +15,7 @@ const initialState = {
     changedProducts: [],
     newProduct: null,
     totalCount: null,
+    retrieveProducts: false,
     loading: true,
     error: null
 }
@@ -36,7 +37,7 @@ export default function product(state = initialState, action) {
                 product: payload,
                 loading: false
             }
-        case ADD_PRODUCT:
+        case NEW_PRODUCT:
             return {
                 ...state,
                 newProduct: payload,
@@ -63,9 +64,10 @@ export default function product(state = initialState, action) {
             return {
                 ...state,
                 changedProducts: [
-                    ...state.changedProducts.slice(0, payload),
-                    ...state.changedProducts.slice(payload + 1)
-                ]
+                    ...state.changedProducts.slice(0, payload.index),
+                    ...state.changedProducts.slice(payload.index + 1)
+                ],
+                retrieveProducts: payload.retrieveProducts
             }
         case START_PRODUCT_LOADING:
             return {

@@ -4,7 +4,7 @@ import { setAlert } from 'redux/actions/alert.action'
 import {
     GET_PRODUCTS,
     GET_PRODUCT,
-    ADD_PRODUCT,
+    NEW_PRODUCT,
     ADD_CHANGED_PRODUCT,
     UPDATE_CHANGED_PRODUCT,
     REMOVE_CHANGED_PRODUCT,
@@ -72,7 +72,7 @@ export const addProduct = formData => async dispatch => {
         const res = await axiosInstance.post('/products', body, config)
 
         dispatch({
-            type: ADD_PRODUCT,
+            type: NEW_PRODUCT,
             payload: res.data
         })
 
@@ -108,7 +108,7 @@ export const updateProduct = formData => async dispatch => {
         const res = await axiosInstance.patch(`/products/${formData.id}`, body, config)
 
         dispatch({
-            type: ADD_PRODUCT,
+            type: NEW_PRODUCT,
             payload: res.data
         })
 
@@ -129,7 +129,7 @@ export const removeProduct = id => async dispatch => {
         const res = await axiosInstance.delete(`/products/${id}`)
 
         dispatch({
-            type: ADD_PRODUCT,
+            type: NEW_PRODUCT,
             payload: res.data
         })
 
@@ -160,10 +160,10 @@ export const updateChangedProduct = (id, item, index) => dispatch => {
 }
 
 //Remove Changed Product
-export const removeChangedProduct = (index) => dispatch => {
+export const removeChangedProduct = (index, retrieveProducts) => dispatch => {
     dispatch({
         type: REMOVE_CHANGED_PRODUCT,
-        payload: index
+        payload: { index, retrieveProducts }
     })
 }
 

@@ -8,6 +8,7 @@ import {
     ADD_CHANGED_PRODUCT,
     UPDATE_CHANGED_PRODUCT,
     REMOVE_CHANGED_PRODUCT,
+    SER_RETRIEVE_PRODUCTS,
     START_PRODUCT_LOADING,
     PRODUCT_ERROR
 } from "redux/actions/admin/types"
@@ -160,12 +161,21 @@ export const updateChangedProduct = (id, item, index) => dispatch => {
 }
 
 //Remove Changed Product
-export const removeChangedProduct = (index, retrieveProducts) => dispatch => {
+export const removeChangedProduct = (index) => dispatch => {
     dispatch({
         type: REMOVE_CHANGED_PRODUCT,
-        payload: { index, retrieveProducts }
+        payload: index
     })
 }
+
+//Set Retrieve Product
+export const setRetrieveProducts = (retrieveProducts) => dispatch => {
+    dispatch({
+        type: SER_RETRIEVE_PRODUCTS,
+        payload: retrieveProducts
+    })
+}
+
 
 // Start Loading
 export const startLoading = () => dispatch => {

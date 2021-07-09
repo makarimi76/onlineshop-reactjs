@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProduct } from 'redux/actions/admin/product.action'
+import { getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, setRetrieveProducts, updateProduct } from 'redux/actions/admin/product.action'
 
 // Components
 import RouterLink from 'components/RouterLink'
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductQuantityPage = ({
     product: { products, totalCount, changedProducts, retrieveProducts, loading },
-    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProduct }) => {
+    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, setRetrieveProducts, updateProduct }) => {
 
     const classes = useStyles()
 
@@ -66,9 +66,10 @@ const ProductQuantityPage = ({
 
     // Get Products
     useEffect(() => {
-        if (changedProducts.length === 0) {
+        if (retrieveProducts) {
             startLoading()
             getProducts(page, rowsPerPage)
+            setRetrieveProducts(false)
         }
     }, [page, rowsPerPage, retrieveProducts])
 
@@ -79,7 +80,7 @@ const ProductQuantityPage = ({
 
         if (changedProductIndex !== -1) {
             if (JSON.stringify(Object.assign(changedProducts[changedProductIndex], changedItem)) === JSON.stringify(products[productIndex]))
-                removeChangedProduct(changedProductIndex, false)
+                removeChangedProduct(changedProductIndex)
             else
                 updateChangedProduct(changedId, changedItem, changedProductIndex)
         } else {
@@ -100,9 +101,9 @@ const ProductQuantityPage = ({
         if (changedProducts.length !== 0)
             changedProducts.forEach(async (item, index, array) => {
                 await updateProduct(item)
-                removeChangedProduct(0, false)
+                removeChangedProduct(0)
                 if (array.length - 1 === index)
-                    removeChangedProduct(0, true)
+                    setRetrieveProducts(true)
             })
     }
 
@@ -165,5 +166,5 @@ const mapStateToProps = ({ admin }) => ({
 })
 
 export default connect(mapStateToProps, {
-    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProduct
+    getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, setRetrieveProducts, updateProduct
 })(ProductQuantityPage)

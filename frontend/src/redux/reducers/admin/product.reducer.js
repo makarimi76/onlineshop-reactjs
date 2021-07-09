@@ -5,6 +5,7 @@ import {
     ADD_CHANGED_PRODUCT,
     UPDATE_CHANGED_PRODUCT,
     REMOVE_CHANGED_PRODUCT,
+    SER_RETRIEVE_PRODUCTS,
     START_PRODUCT_LOADING,
     PRODUCT_ERROR
 } from 'redux/actions/admin/types'
@@ -15,7 +16,7 @@ const initialState = {
     changedProducts: [],
     newProduct: null,
     totalCount: null,
-    retrieveProducts: false,
+    retrieveProducts: true,
     loading: true,
     error: null
 }
@@ -64,10 +65,14 @@ export default function product(state = initialState, action) {
             return {
                 ...state,
                 changedProducts: [
-                    ...state.changedProducts.slice(0, payload.index),
-                    ...state.changedProducts.slice(payload.index + 1)
-                ],
-                retrieveProducts: payload.retrieveProducts
+                    ...state.changedProducts.slice(0, payload),
+                    ...state.changedProducts.slice(payload + 1)
+                ]
+            }
+        case SER_RETRIEVE_PRODUCTS:
+            return {
+                ...state,
+                retrieveProducts: payload
             }
         case START_PRODUCT_LOADING:
             return {

@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ProductQuantityPage = ({
-    product: { products, totalCount, changedProducts, loading },
+    product: { products, totalCount, changedProducts, retrieveProducts, loading },
     getProducts, startLoading, addChangedProduct, updateChangedProduct, removeChangedProduct, updateProduct }) => {
 
     const classes = useStyles()
@@ -70,7 +70,7 @@ const ProductQuantityPage = ({
             startLoading()
             getProducts(page, rowsPerPage)
         }
-    }, [page, rowsPerPage, changedProducts])
+    }, [page, rowsPerPage, retrieveProducts])
 
     // If Price or Quantity changed
     const isChanged = (changedId, changedItem) => {
@@ -79,7 +79,7 @@ const ProductQuantityPage = ({
 
         if (changedProductIndex !== -1) {
             if (JSON.stringify(Object.assign(changedProducts[changedProductIndex], changedItem)) === JSON.stringify(products[productIndex]))
-                removeChangedProduct(changedProductIndex)
+                removeChangedProduct(changedProductIndex, false)
             else
                 updateChangedProduct(changedId, changedItem, changedProductIndex)
         } else {
@@ -98,9 +98,11 @@ const ProductQuantityPage = ({
 
     const handleSaveClick = () => {
         if (changedProducts.length !== 0)
-            changedProducts.forEach(async (item) => {
+            changedProducts.forEach(async (item, index, array) => {
                 await updateProduct(item)
-                removeChangedProduct(0)
+                removeChangedProduct(0, false)
+                if (array.length - 1 === index)
+                    removeChangedProduct(0, true)
             })
     }
 

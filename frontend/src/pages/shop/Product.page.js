@@ -141,6 +141,7 @@ const ProductPage = ({
             {loading ? (
                 <div className={classes.spinner}><CircularProgress /></div>
             ) :
+                product &&
                 <Grid container spacing={3} className={classes.box}>
                     <Grid item xs={12} sm={4} className={classes.imageBox}>
                         {product.image ? <img src={product.image} className={classes.image} /> :
@@ -207,7 +208,8 @@ const ProductPage = ({
                     <Typography variant="subtitle1" className={classes.marginT4}>
                         {product.description}
                     </Typography>
-                </Grid>}
+                </Grid>
+            }
         </ShopLayout >
     )
 }

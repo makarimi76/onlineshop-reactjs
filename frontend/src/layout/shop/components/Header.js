@@ -1,3 +1,5 @@
+import { connect } from 'react-redux'
+
 // Components
 import RouterLink from 'components/RouterLink'
 
@@ -41,17 +43,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const Header = () => {
+const Header = ({ cart: { carts } }) => {
 
     const classes = useStyles();
 
-    const cart = () => {
-        return (
-            <Badge badgeContent={3} className={classes.badge} color="secondary">
-                <IoMdCart className={classes.cartIcon} />
-            </Badge>
-        )
-    }
+    const cart = (
+        <Badge badgeContent={carts.length} className={classes.badge} color="secondary">
+            <IoMdCart className={classes.cartIcon} />
+        </Badge>
+    )
 
     return (
         <AppBar position="sticky">
@@ -65,14 +65,14 @@ const Header = () => {
                 <div className={classes.sectionDesktop}>
                     <RouterLink to='/admin/login'><Button color="inherit" className={classes.button}>مدیریت</Button></RouterLink>
                     <Button color="inherit">
-                        {cart()}
+                        {cart}
                         سبد خرید
                     </Button>
                 </div>
                 <div className={classes.sectionMobile}>
                     <RouterLink to='/admin/login'><Button color="inherit" className={classes.button}>مدیریت</Button></RouterLink>
                     <Button color="inherit">
-                        {cart()}
+                        {cart}
                     </Button>
                 </div>
             </Toolbar>
@@ -80,4 +80,8 @@ const Header = () => {
     )
 }
 
-export default Header
+const mapStateToProps = ({ shop }) => ({
+    cart: shop.cart
+})
+
+export default connect(mapStateToProps)(Header)

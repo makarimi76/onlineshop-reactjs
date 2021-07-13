@@ -2,9 +2,11 @@ import { connect } from 'react-redux'
 
 // Redux
 import { removeCart } from 'redux/actions/shop/cart.action'
+
 // Components
 import ShopLayout from 'layout/shop/Shop.layout'
 import Table from 'components/Table'
+import RouterLink from 'components/RouterLink'
 
 // UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -108,11 +110,13 @@ const CartPage = ({ cart: { carts }, removeCart }) => {
 
                     <div className={classes.bottomMenu}>
                         <Typography variant="h6">جمع: {carts.map(cart => cart.price * cart.quantity).reduce((a, b) => a + b, 0)} تومان</Typography>
-                        <Button
-                            className={classes.checkout}
-                            variant="contained"
-                            size="large"
-                        >نهایی کردن سبد خرید</Button>
+                        <RouterLink to={`/shop/checkout`}>
+                            <Button
+                                className={classes.checkout}
+                                variant="contained"
+                                size="large"
+                            >نهایی کردن سبد خرید</Button>
+                        </RouterLink>
                     </div>
                 </>
             }

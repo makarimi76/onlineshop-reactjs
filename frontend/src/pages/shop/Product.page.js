@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ProductPage = ({
-    match, product: { product, productLoading }, category: { categories }, cart: { carts },
+    match, product: { product, loading, error }, category: { categories }, cart: { carts },
     getProduct, startProductLoading, getCategories, addCart, updateCart, setAlert
 }) => {
 
@@ -136,9 +136,11 @@ const ProductPage = ({
         }
     }
 
-    return (productLoading ? <div className={classes.spinner}><CircularProgress /></div> :
-        !product ? <Redirect to='/404' /> :
-            <ShopLayout maxWidth='md'>
+    return (error && error.message.includes('404') ? <Redirect to='/404' /> :
+        <ShopLayout maxWidth='md'>
+            {loading ? (
+                <div className={classes.spinner}><CircularProgress /></div>
+            ) :
                 <Grid container spacing={3} className={classes.box}>
                     <Grid item xs={12} sm={4} className={classes.imageBox}>
                         {product.image ? <img src={product.image} className={classes.image} /> :
@@ -205,8 +207,8 @@ const ProductPage = ({
                     <Typography variant="subtitle1" className={classes.marginT4}>
                         {product.description}
                     </Typography>
-                </Grid>
-            </ShopLayout >
+                </Grid>}
+        </ShopLayout >
     )
 }
 

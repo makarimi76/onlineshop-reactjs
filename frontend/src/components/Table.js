@@ -1,22 +1,22 @@
-import Table from '@material-ui/core/Table'
+import MaterialTable from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 
-const AdminTable = ({ head, body, pagination}) => {
+const Table = ({ head, body, pagination}) => {
 
     return (
         <>
             <TableContainer>
-                <Table stickyHeader>
+                <MaterialTable stickyHeader>
                     <TableHead>
                         {head}
                     </TableHead>
                     <TableBody>
                         {body}
                     </TableBody>
-                </Table>
+                </MaterialTable>
             </TableContainer>
 
             {pagination &&
@@ -43,4 +43,4 @@ const AdminTable = ({ head, body, pagination}) => {
     )
 }
 
-export default AdminTable
+export default Table

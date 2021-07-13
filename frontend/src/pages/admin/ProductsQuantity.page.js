@@ -7,7 +7,7 @@ import { getProducts, startLoading, addChangedProduct, updateChangedProduct, rem
 // Components
 import RouterLink from 'components/RouterLink'
 import AdminLayout from 'layout/admin/Admin.layout'
-import AdminTable from 'pages/admin/components/AdminTable'
+import Table from 'components/Table'
 import EditText from 'pages/admin/components/EditText'
 
 // UI
@@ -66,12 +66,18 @@ const ProductQuantityPage = ({
 
     // Get Products
     useEffect(() => {
+        startLoading()
+        getProducts(page, rowsPerPage)
+    }, [page, rowsPerPage])
+
+    // Get Products When Saved Changes
+    useEffect(() => {
         if (retrieveProducts) {
             startLoading()
             getProducts(page, rowsPerPage)
             setRetrieveProducts(false)
         }
-    }, [page, rowsPerPage, retrieveProducts])
+    }, [retrieveProducts])
 
     // If Price or Quantity changed
     const isChanged = (changedId, changedItem) => {
@@ -118,7 +124,7 @@ const ProductQuantityPage = ({
 
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                 <Paper elevation={3} className={classes.root}>
-                    <AdminTable
+                    <Table
                         head={
                             <TableRow>
                                 {columns.map((column) => (

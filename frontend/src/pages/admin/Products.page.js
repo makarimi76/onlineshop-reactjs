@@ -7,7 +7,7 @@ import { getProducts, removeProduct, startLoading } from 'redux/actions/admin/pr
 // Components
 import RouterLink from 'components/RouterLink'
 import AdminLayout from 'layout/admin/Admin.layout'
-import AdminTable from 'pages/admin/components/AdminTable'
+import Table from 'components/Table'
 import ManageProduct from 'pages/admin/components/ManageProduct'
 
 // UI
@@ -122,7 +122,7 @@ const ProductsPage = ({ getProducts, removeProduct, startLoading, product: { pro
 
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                 <Paper elevation={3} className={classes.root}>
-                    <AdminTable
+                    <Table
                         head={
                             <TableRow>
                                 {columns.map((column) => (

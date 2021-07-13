@@ -6,7 +6,7 @@ import { getOrders, startLoading } from 'redux/actions/admin/order.action'
 
 // Components
 import AdminLayout from 'layout/admin/Admin.layout'
-import AdminTable from 'pages/admin/components/AdminTable'
+import Table from 'components/Table'
 
 // UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -118,7 +118,7 @@ const OrdersPage = ({ getOrders, startLoading, order: { orders, totalCount, load
 
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                 <Paper elevation={3} className={classes.root}>
-                    <AdminTable
+                    <Table
                         head={
                             <TableRow>
                                 {columns.map((column) => (

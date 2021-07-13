@@ -64,16 +64,20 @@ const Header = ({ cart: { carts } }) => {
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
                     <RouterLink to='/admin/login'><Button color="inherit" className={classes.button}>مدیریت</Button></RouterLink>
-                    <Button color="inherit">
-                        {cart}
-                        سبد خرید
-                    </Button>
+                    <RouterLink to='/shop/cart'>
+                        <Button color="inherit">
+                            {cart}
+                            سبد خرید
+                        </Button>
+                    </RouterLink>
                 </div>
                 <div className={classes.sectionMobile}>
                     <RouterLink to='/admin/login'><Button color="inherit" className={classes.button}>مدیریت</Button></RouterLink>
-                    <Button color="inherit">
-                        {cart}
-                    </Button>
+                    <RouterLink to='/shop/cart'>
+                        <Button color="inherit">
+                            {cart}
+                        </Button>
+                    </RouterLink>
                 </div>
             </Toolbar>
         </AppBar>

@@ -3,6 +3,7 @@ import axiosInstance from "utils/axios"
 import {
     GET_CATEGORIZED_PRODUCTS_SHOP,
     GET_PRODUCTS_BY_CATEGORY_SHOP,
+    GET_PRODUCT_SHOP,
     START_PRODUCT_LOADING_SHOP,
     PRODUCT_ERROR_SHOP
 } from "redux/actions/shop/types"
@@ -32,6 +33,24 @@ export const getProductsByCategory = (name, page, limit) => async dispatch => {
 
         dispatch({
             type: GET_PRODUCTS_BY_CATEGORY_SHOP,
+            payload: res.data
+        })
+
+    } catch (err) {
+        dispatch({
+            type: PRODUCT_ERROR_SHOP,
+            payload: err
+        })
+    }
+}
+
+// Get Product
+export const getProduct = (id) => async dispatch => {
+    try {
+        const res = await axiosInstance.get(`/products/${id}`)
+
+        dispatch({
+            type: GET_PRODUCT_SHOP,
             payload: res.data
         })
 

@@ -1,9 +1,10 @@
-import React from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
-
+// Components
 import Header from 'layout/shop/components/Header'
 import Footer from 'layout/shop/components/Footer'
+
+// UI
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -17,16 +18,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ShopLayout = ({ children }) => {
+const ShopLayout = ({ children, maxWidth }) => {
 
     const classes = useStyles();
 
     return (
         <>
             <Header />
-            <main className={classes.main}>
+            <Container component='main' maxWidth={maxWidth || 'xl'} className={classes.main}>
                 {children}
-            </main>
+            </Container>
             <Footer />
         </>
     )

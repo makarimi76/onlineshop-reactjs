@@ -25,7 +25,6 @@ export const updateCart = (index, item) => dispatch => {
     })
 
     dispatch(setAlert(`تعداد کالا در سبد خرید به ${item.quantity} عدد تغییر یافت`, 'success'))
-
 }
 
 //Remove Product from Carts
@@ -34,4 +33,6 @@ export const removeCart = (index) => dispatch => {
         type: REMOVE_CART,
         payload: index
     })
+
+    dispatch(setAlert('کالا از سبد خرید حذف شد', 'success'))
 }

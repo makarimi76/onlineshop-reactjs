@@ -18,14 +18,6 @@ const useStyles = makeStyles((theme) => ({
     spinner: {
         display: 'flex',
         justifyContent: 'center'
-    },
-    box: {
-        [theme.breakpoints.up('md')]: {
-            margin: theme.spacing(4)
-        },
-        [theme.breakpoints.down('md')]: {
-            marginBottom: theme.spacing(2)
-        }
     }
 }))
 
@@ -42,7 +34,7 @@ const HomePage = ({ category: { categories, loading }, product: { categorizedPro
         <ShopLayout>
             {loading ? <div className={classes.spinner}><CircularProgress /></div> :
                 categories.map(category => category.isShowHome &&
-                    <div key={category.id} className={classes.box} >
+                    <div key={category.id} >
                         <RouterLink to={`/shop/products/${category.slug}`} color="inherit">
                             <Typography variant="h6">کالا های گروه {category.name.replace('کالاهای', '')}</Typography>
                         </RouterLink>

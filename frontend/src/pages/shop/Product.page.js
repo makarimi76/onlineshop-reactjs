@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
     box: {
         [theme.breakpoints.up('sm')]: {
-            marginTop: theme.spacing(1)
+            marginTop: theme.spacing(4)
         }
     },
     imageBox: {
@@ -70,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
     marginT2: {
         marginTop: theme.spacing(2)
     },
+    marginT4: {
+        marginTop: theme.spacing(4)
+    },
     quantity: {
         width: 100
     },
@@ -81,10 +84,14 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: theme.palette.success.dark,
         }
+    },
+    hr: {
+        width: '100%',
+        borderTop: '1px solid #e4e4e4'
     }
 }))
 
-const ProductPage = ({ match, product: { product, loading }, category: { categories }, getProduct, startProductLoading, getCategories }) => {
+const ProductPage = ({ match, product: { product, productLoading }, category: { categories }, getProduct, startProductLoading, getCategories }) => {
 
     const classes = useStyles()
 
@@ -98,7 +105,7 @@ const ProductPage = ({ match, product: { product, loading }, category: { categor
             getCategories()
     }, [])
 
-    return (loading ? <div className={classes.spinner}><CircularProgress /></div> :
+    return (productLoading ? <div className={classes.spinner}><CircularProgress /></div> :
         !product ? <Redirect to='/404' /> :
             <ShopLayout maxWidth='md'>
                 <Grid container spacing={3} className={classes.box}>
@@ -158,7 +165,8 @@ const ProductPage = ({ match, product: { product, loading }, category: { categor
                             </>
                         }
                     </Grid>
-                    <Typography variant="subtitle1" className={classes.marginT2}>
+                    <div className={classes.hr + ' ' + classes.marginT4}></div>
+                    <Typography variant="subtitle1" className={classes.marginT4}>
                         {product.description}
                     </Typography>
                 </Grid>

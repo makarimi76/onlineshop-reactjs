@@ -13,6 +13,7 @@ const initialState = {
     product: null,
     limitCategorizedProducts: 10,
     loading: true,
+    productLoading: true,
     getProducts: false,
     error: null
 }
@@ -49,12 +50,14 @@ export default function product(state = initialState, action) {
             return {
                 ...state,
                 product: payload,
-                loading: false
+                loading: false,
+                productLoading: false,
             }
         case START_PRODUCT_LOADING_SHOP:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                productLoading: true,
             }
         case PRODUCT_ERROR_SHOP:
             return {

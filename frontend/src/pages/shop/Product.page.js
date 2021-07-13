@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 // Redux
 import { getProduct, startProductLoading } from 'redux/actions/shop/product.action'
 import { getCategories } from 'redux/actions/shop/category.action'
+import { addCart, updateCart } from 'redux/actions/shop/cart.action'
+import { setAlert } from 'redux/actions/alert.action'
 
 // Components
 import ShopLayout from 'layout/shop/Shop.layout'
@@ -91,7 +93,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductPage = ({ match, product: { product, productLoading }, category: { categories }, getProduct, startProductLoading, getCategories }) => {
+const ProductPage = ({
+    match, product: { product, productLoading }, category: { categories }, cart: { carts },
+    getProduct, startProductLoading, getCategories, addCart, updateCart, setAlert
+}) => {
 
     const classes = useStyles()
 
@@ -104,6 +109,32 @@ const ProductPage = ({ match, product: { product, productLoading }, category: { 
         if (categories.length === 0)
             getCategories()
     }, [])
+
+    // Quantity state
+    const [quantity, setQuantity] = useState(0)
+
+    const handleCart = (quantity) => {
+        const cartProductIndex = carts.findIndex(item => item.id === product.id)
+
+        const { id, name, price } = product
+        if (cartProductIndex !== -1) {
+            updateCart(cartProductIndex, { quantity })
+        } else {
+            addCart({ id, name, price, quantity })
+        }
+    }
+
+    const handleClick = () => {
+        if (quantity > 0) {
+            if (quantity < +product.quantity + 1) {
+                handleCart(quantity)
+            } else {
+                setAlert(`تعداد کالا بیشتر از موجودی انبار می باشد، موجودی انبار ${product.quantity} عدد می باشد`, 'warning')
+            }
+        } else {
+            setAlert('تعداد کالا به درستی وارد نشده است', 'error')
+        }
+    }
 
     return (productLoading ? <div className={classes.spinner}><CircularProgress /></div> :
         !product ? <Redirect to='/404' /> :
@@ -123,22 +154,24 @@ const ProductPage = ({ match, product: { product, productLoading }, category: { 
                             <Breadcrumbs className={classes.marginT2} separator={<IoMdArrowDropleft />} >
                                 {product.categories.map((category, index, array) => {
                                     const findCategory = categories.find(item => item.name === category && item.slug)
-                                    if (index === array.length - 1)
-                                        return (
-                                            <div key={category} >
-                                                <RouterLink to={findCategory && `/shop/products/${findCategory.slug}`} color='black'>
-                                                    {category}
-                                                </RouterLink>
-                                            </div>
-                                        )
-                                    else {
-                                        return (
-                                            <div key={category} >
-                                                <RouterLink key={category} to={findCategory && `/shop/products/${findCategory.slug}`} color='inherit'>
-                                                    {category}
-                                                </RouterLink>
-                                            </div>
-                                        )
+                                    if (findCategory) {
+                                        if (index === array.length - 1)
+                                            return (
+                                                <div key={category} >
+                                                    <RouterLink to={`/shop/products/${findCategory.slug}`} color='black'>
+                                                        {category}
+                                                    </RouterLink>
+                                                </div>
+                                            )
+                                        else {
+                                            return (
+                                                <div key={category} >
+                                                    <RouterLink to={`/shop/products/${findCategory.slug}`} color='inherit'>
+                                                        {category}
+                                                    </RouterLink>
+                                                </div>
+                                            )
+                                        }
                                     }
                                 }
                                 )}
@@ -155,11 +188,14 @@ const ProductPage = ({ match, product: { product, productLoading }, category: { 
                                         type="number"
                                         variant="outlined"
                                         color="secondary"
+                                        value={quantity}
+                                        onChange={(e) => e.target.value >= 0 && setQuantity(e.target.value)}
                                     />
                                     <Button
                                         className={classes.addToCart}
                                         variant="contained"
                                         endIcon={<IoMdAddCircleOutline />}
+                                        onClick={handleClick}
                                     >افزودن به سبد خرید</Button>
                                 </div>
                             </>
@@ -176,9 +212,10 @@ const ProductPage = ({ match, product: { product, productLoading }, category: { 
 
 const mapStateToProps = ({ shop }) => ({
     product: shop.product,
-    category: shop.category
+    category: shop.category,
+    cart: shop.cart
 })
 
 export default connect(mapStateToProps, {
-    getProduct, startProductLoading, getCategories
+    getProduct, startProductLoading, getCategories, addCart, updateCart, setAlert
 })(ProductPage)

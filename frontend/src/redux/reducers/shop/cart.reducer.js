@@ -1,7 +1,7 @@
 import {
-    ADD_PRODUCT_TO_CART,
-    UPDATE_PRODUCT_TO_CART,
-    REMOVE_PRODUCT_TO_CART
+    ADD_CART,
+    UPDATE_CART,
+    REMOVE_CART
 } from 'redux/actions/shop/types'
 
 const initialState = {
@@ -12,7 +12,7 @@ export default function cart(state = initialState, action) {
     const { type, payload } = action
 
     switch (type) {
-        case ADD_PRODUCT_TO_CART:
+        case ADD_CART:
             return {
                 ...state,
                 carts: [
@@ -20,16 +20,16 @@ export default function cart(state = initialState, action) {
                     payload
                 ]
             }
-        case UPDATE_PRODUCT_TO_CART:
+        case UPDATE_CART:
             return {
                 ...state,
                 carts: [
                     ...state.carts.slice(0, payload.index),
-                    payload,
+                    Object.assign(state.carts[payload.index], payload.item),
                     ...state.carts.slice(payload.index + 1)
                 ]
             }
-        case REMOVE_PRODUCT_TO_CART:
+        case REMOVE_CART:
             return {
                 ...state,
                 carts: [

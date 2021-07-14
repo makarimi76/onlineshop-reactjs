@@ -21,7 +21,10 @@ import { IoMdTrash } from 'react-icons/io'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        marginTop: theme.spacing(4)
+        marginTop: theme.spacing(2),
+        [theme.breakpoints.up('md')]: {
+            marginTop: theme.spacing(4)
+        }
     },
     noCart: {
         width: '100%',
@@ -32,12 +35,19 @@ const useStyles = makeStyles((theme) => ({
     bottomMenu: {
         display: 'flex',
         justifyContent: 'space-between',
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
+        [theme.breakpoints.down('md')]: {
+            flexDirection: 'column'
+        }
     }, checkout: {
+        width: '100%',
         color: '#fff',
         backgroundColor: theme.palette.success.main,
         '&:hover': {
             backgroundColor: theme.palette.success.dark,
+        },
+        [theme.breakpoints.down('md')]: {
+            marginTop: theme.spacing(2)
         }
     }
 }))

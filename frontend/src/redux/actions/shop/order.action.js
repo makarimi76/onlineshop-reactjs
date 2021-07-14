@@ -2,6 +2,11 @@
 import axiosInstance from 'utils/axios'
 import { jsonToFormData } from 'utils/jsonToFormData'
 
+import {
+    NEW_ORDER_SHOP,
+    ORDER_ERROR_SHOP
+} from 'redux/actions/shop/types'
+
 // Add Order
 export const addOrder = formData => async dispatch => {
     const config = {
@@ -15,18 +20,15 @@ export const addOrder = formData => async dispatch => {
     try {
         const res = await axiosInstance.post('/orders', body, config)
 
-        console.log(res.data)
-        // dispatch({
-        //     type: NEW_PRODUCT,
-        //     payload: res.data
-        // })
-
-        dispatch(setAlert(`کالا ${res.data.id} با موفقیت اضافه شد`, 'success'))
+        dispatch({
+            type: NEW_ORDER_SHOP,
+            payload: res.data
+        })
 
     } catch (err) {
-        // dispatch({
-        //     type: PRODUCT_ERROR,
-        //     payload: err
-        // })
+        dispatch({
+            type: ORDER_ERROR_SHOP,
+            payload: err
+        })
     }
 }

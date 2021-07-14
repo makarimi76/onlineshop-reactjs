@@ -1,4 +1,5 @@
 import axiosInstance from 'utils/axios'
+import { jsonToFormData } from 'utils/jsonToFormData'
 import { setAlert } from 'redux/actions/alert.action'
 
 import {
@@ -59,15 +60,7 @@ export const addProduct = formData => async dispatch => {
         }
     }
 
-    const body = new FormData()
-
-    Object.keys(formData).forEach(key => {
-        if (key === 'categories') {
-            formData.categories.forEach((item) => body.append(key, item))
-        } else {
-            body.append(key, formData[key])
-        }
-    })
+    const body = jsonToFormData(formData)
 
     try {
         const res = await axiosInstance.post('/products', body, config)
@@ -96,14 +89,7 @@ export const updateProduct = formData => async dispatch => {
         }
     }
 
-    const body = new FormData()
-    Object.keys(formData).forEach(key => {
-        if (key === 'categories') {
-            formData.categories.forEach((item) => body.append(key, item))
-        } else {
-            body.append(key, formData[key])
-        }
-    })
+    const body = jsonToFormData(formData)
 
     try {
         const res = await axiosInstance.patch(`/products/${formData.id}`, body, config)

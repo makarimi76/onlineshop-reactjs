@@ -7,6 +7,7 @@ import { getOrders, startLoading } from 'redux/actions/admin/order.action'
 // Components
 import AdminLayout from 'layout/admin/Admin.layout'
 import Table from 'components/Table'
+import ManageOrder from 'pages/admin/components/ManageOrder'
 
 // UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -76,21 +77,6 @@ const OrdersPage = ({ getOrders, startLoading, order: { orders, totalCount, load
         getOrders(orderStatus, page, rowsPerPage)
     }, [startLoading, getOrders, orderStatus, page, rowsPerPage])
 
-
-    // Set Rows
-    // useEffect(() => {
-    //     setRows([])
-    //     orders.map((item) => {
-    //         let totalPrice = 0
-    //         item.orderList.map((order) => {
-    //             return totalPrice += Number(order.price)
-    //         })
-
-    //         let { id, customer, orderTime } = item
-    //         return setRows(rows => [...rows, { id, customer, totalPrice, orderTime }])
-    //     })
-    // }, [orders])
-
     const handleChangePage = (e, newPage) => {
         setPage(newPage);
     }
@@ -104,8 +90,19 @@ const OrdersPage = ({ getOrders, startLoading, order: { orders, totalCount, load
         setOrderStatus(e.target.value)
     }
 
+    const [manageOrder, setManageOrder] = useState({
+        open: false,
+        id: undefined
+    })
+
+    const handleManageOrder = (id) => {
+        setManageOrder({ open: true, id })
+    }
+
     return (
         <AdminLayout>
+            {manageOrder.open && <ManageOrder options={manageOrder} setOptions={setManageOrder} />}
+
             <div className={classes.topMenu}>
                 <Typography variant="h6">مدیریت سفارش ها</Typography>
                 <RadioGroup row name="orderStatus" value={orderStatus} onChange={handleOrderStatusChange}>
@@ -133,15 +130,16 @@ const OrdersPage = ({ getOrders, startLoading, order: { orders, totalCount, load
 
                         body={orders.map((row) => (
                             <TableRow key={row.id}>
-                                <TableCell align="left" style={{ width: "30%" }} size='small'>{row.customer}</TableCell>
+                                <TableCell align="left" style={{ width: "30%" }} size='small'>{row.name} {row.familyName}</TableCell>
                                 <TableCell align="left" style={{ width: "25%" }}>
-                                    {row.orderList.map((order) => Number(order.price)).reduce((a, b) => a + b, 0)}
+                                    {row.orderList.map((order) => Number(order.price * order.quantity)).reduce((a, b) => a + b, 0)} تومان
                                 </TableCell>
-                                <TableCell align="left" style={{ width: "25%" }}>{row.orderTime}</TableCell>
+                                <TableCell align="left" style={{ width: "25%" }}>{Date(row.createdAt).slice(3, 25)}</TableCell>
                                 <TableCell align="left" style={{ width: "20%" }}>
                                     <Button
                                         color="secondary"
                                         startIcon={<IoMdCheckbox />}
+                                        onClick={() => handleManageOrder(row.id)}
                                     >بررسی سفارش</Button>
                                 </TableCell>
                             </TableRow>

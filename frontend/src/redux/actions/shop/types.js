@@ -15,4 +15,6 @@ export const UPDATE_CART = 'UPDATE_CART'
 export const REMOVE_CART = 'REMOVE_CART'
 
 export const NEW_ORDER_SHOP = 'NEW_ORDER_SHOP'
+export const GET_ORDER_SHOP = 'GET_ORDER_SHOP'
+export const UPDATE_ORDER_SHOP = 'UPDATE_ORDER_SHOP'
 export const ORDER_ERROR_SHOP = 'ORDER_ERROR_SHOP'

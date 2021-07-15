@@ -61,7 +61,7 @@ export const updateOrder = (formData, result) => async dispatch => {
         }
     }
 
-    const body = await jsonToFormData({ ...formData, idPaid: result })
+    const body = await jsonToFormData({ ...formData, isPaid: result })
 
     try {
         const res = await axiosInstance.patch(`/orders/${formData.id}`, body, config)

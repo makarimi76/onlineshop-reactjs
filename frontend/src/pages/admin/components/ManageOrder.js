@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 // Redux
 import { getOrder } from 'redux/actions/admin/order.action'
 
+// Components
+import Table from 'components/Table'
+
 // UI
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -15,15 +18,16 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Paper from '@material-ui/core/Paper'
+import TableRow from '@material-ui/core/TableRow'
+import TableCell from '@material-ui/core/TableCell'
 
 import { IoMdClose } from 'react-icons/io'
 
 const useStyles = makeStyles((theme) => ({
-    button: {
-        backgroundColor: theme.palette.success.main,
-        '&:hover': {
-            backgroundColor: theme.palette.success.dark
-        }
+    root: {
+        width: '100%',
+        marginTop: theme.spacing(2)
     },
     title: {
         display: 'flex',
@@ -43,24 +47,41 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center'
     },
-    upload: {
-        display: 'flex'
+    action: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: theme.spacing(2)
     },
-    uploadPath: {
-        flex: 1
+    button: {
+        height: 46,
+        padding: theme.spacing(0, 4),
+        color: '#fff',
+        backgroundColor: theme.palette.success.main,
+        '&:hover': {
+            backgroundColor: theme.palette.success.dark,
+        }
     },
-    uploadButton: {
-        height: 56,
-        marginTop: 16,
-        marginBottom: 8,
-        marginLeft: 8
-    }
 }))
 
-const ManageOrder = ({ options: { open, id }, setOptions, order: { order, loading }, getOrder }) => {
+const ManageOrder = ({ options: { open, id }, setOptions, order: { order }, getOrder }) => {
 
     const theme = useTheme()
     const classes = useStyles()
+
+    const columns = [
+        {
+            id: 'name',
+            label: 'نام کالا'
+        },
+        {
+            id: 'price',
+            label: 'قیمت'
+        },
+        {
+            id: 'quantity',
+            label: 'تعداد'
+        },
+    ]
 
     useEffect(() => {
         getOrder(id)
@@ -94,18 +115,56 @@ const ManageOrder = ({ options: { open, id }, setOptions, order: { order, loadin
                     <Typography variant="h6">نمایش سفارش</Typography>
                 </DialogTitle>
 
-                <DialogContent dir="rtl" dividers className={classes.content}>
-                    {loading ? <div className={classes.spinner}><CircularProgress /></div> :
-                        <>
-                            Content
-                        </>}
-                </DialogContent>
+                {!order ? <div className={classes.spinner}><CircularProgress /></div> :
+                    <>
+                        <DialogContent dir="rtl" className={classes.content}>
+                            <Typography variant="subtitle1">نام مشتری: {order.name} {order.familyName}</Typography>
+                            <Typography variant="subtitle1">آدرس: {order.address}</Typography>
+                            <Typography variant="subtitle1">تلفن: {order.phone}</Typography>
+                            <Typography variant="subtitle1">زمان ثبت سفارش: {Date(order.createdAt).slice(3, 25)}</Typography>
+                            <Typography variant="subtitle1">زمان انتخابی ارسال: {order.shippingTime}</Typography>
 
-                <DialogActions>
-                    <Button onClick={handleSubmit} variant="contained" color="secondary" size="large">
-                        ذخیره
-                    </Button>
-                </DialogActions>
+                            <Paper elevation={3} className={classes.root}>
+                                <Table
+                                    head={
+                                        <TableRow>
+                                            {columns.map((column) => (
+                                                <TableCell
+                                                    key={column.id}
+                                                >
+                                                    {column.label}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    }
+
+                                    body={
+                                        order.orderList.map(row => (
+                                            <TableRow key={row.id}>
+                                                <TableCell align="left" style={{ width: "50%" }} size='small'>{row.name}</TableCell>
+                                                <TableCell align="left" style={{ width: "30%" }} size='small'>{row.price}</TableCell>
+                                                <TableCell align="left" style={{ width: "25%" }} size='small'>{row.quantity}</TableCell>
+                                            </TableRow>
+                                        ))
+                                    }
+                                />
+                            </Paper>
+                        </DialogContent>
+
+                        <DialogActions className={classes.action} >
+                            {order.isDelivery === "true" ?
+                                (
+                                    <Typography variant="subtitle1">این سفارش در تاریخ {order.deliveryTime} تحویل شده است</Typography>
+                                ) :
+                                (
+                                    <Button onClick={handleSubmit} variant="contained" className={classes.button} size="large">
+                                        تحویل شد
+                                    </Button>
+                                )
+                            }
+                        </DialogActions>
+                    </>
+                }
 
             </Dialog>
         </>

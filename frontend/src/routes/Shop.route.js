@@ -14,7 +14,7 @@ const ShopRoute = () => {
             <Route path='/shop/product/:id' component={ProductPage} />
             <Route path='/shop/cart' component={CartPage} />
             <Route path='/shop/checkout' component={CheckoutPage} />
-            <Route path='/shop/payment-result' component={PaymentResultPage} />
+            <Route path='/shop/payment-result/:id' component={PaymentResultPage} />
             <Route component={NotFoundPage}></Route>
         </Switch>
     )

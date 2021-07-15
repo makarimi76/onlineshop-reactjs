@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
@@ -52,9 +52,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const CheckoutPage = ({ cart: { carts }, addOrder }) => {
+const CheckoutPage = ({ cart: { carts }, order: { newOrder }, addOrder }) => {
 
     const classes = useStyles()
+
+    useEffect(() => {
+        if (newOrder)
+            window.location.href = `http://127.0.0.1:5500/bank.html?id=${newOrder.id}`
+    }, [newOrder])
 
     const [formData, setFormData] = useState({
         name: '',
@@ -162,7 +167,9 @@ const CheckoutPage = ({ cart: { carts }, addOrder }) => {
 }
 
 const mapStateToProps = ({ shop }) => ({
-    cart: shop.cart
+    cart: shop.cart,
+    order: shop.order
+
 })
 
 export default connect(mapStateToProps, { addOrder })(CheckoutPage)

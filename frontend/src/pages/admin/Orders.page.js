@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getOrders, startLoading } from 'redux/actions/admin/order.action'
+import { getOrders, startOrderLoading } from 'redux/actions/admin/order.action'
 
 // Components
 import AdminLayout from 'layout/admin/Admin.layout'
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const OrdersPage = ({ getOrders, startLoading, order: { orders, totalCount, loading } }) => {
+const OrdersPage = ({ getOrders, startOrderLoading, order: { orders, totalCount, loading } }) => {
 
     const classes = useStyles()
 
@@ -73,9 +73,9 @@ const OrdersPage = ({ getOrders, startLoading, order: { orders, totalCount, load
 
     // Get Orders
     useEffect(() => {
-        startLoading()
+        startOrderLoading()
         getOrders(orderStatus, page, rowsPerPage)
-    }, [startLoading, getOrders, orderStatus, page, rowsPerPage])
+    }, [startOrderLoading, getOrders, orderStatus, page, rowsPerPage])
 
     const handleChangePage = (e, newPage) => {
         setPage(newPage);
@@ -168,5 +168,5 @@ const mapStateToProps = ({ admin }) => ({
 })
 
 export default connect(mapStateToProps, {
-    getOrders, startLoading
+    getOrders, startOrderLoading
 })(OrdersPage)

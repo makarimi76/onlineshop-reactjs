@@ -48,7 +48,7 @@ export const getOrder = id => async dispatch => {
 }
 
 // Start Loading
-export const startLoading = () => dispatch => {
+export const startOrderLoading = () => dispatch => {
     dispatch({
         type: START_ORDER_LOADING
     })

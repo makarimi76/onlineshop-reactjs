@@ -67,6 +67,7 @@ const CheckoutPage = ({ cart: { carts }, order: { newOrder }, addOrder }) => {
         address: '',
         phone: '',
         shippingTime: '',
+        isDelivery: false,
         orderList: carts
     })
     const { name, familyName, address, phone, shippingTime } = formData

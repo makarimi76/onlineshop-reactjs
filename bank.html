@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bank</title>
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: tahoma;
+      }
+      button {
+        font-size: 18px;
+        min-height: 40px;
+        margin: 10px;
+        padding: 0 20px;
+      }
+      .yes-btn {
+        color: #fff;
+        background-color: #64c2d5;
+        border: 1px solid #00abcd;
+      }
+      .no-btn {
+        color: #fff;
+        background-color: #b94a48;
+        border: 1px solid #b94a48;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>پرداخت انجام شود؟</h2>
+    <div>
+      <button class="yes-btn" onclick="handleClick(this)" value="yes">
+        بله
+      </button>
+      <button class="no-btn" onclick="handleClick(this)" value="no">خیر</button>
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+
+      function handleClick(e) {
+        window.location.href = `http://localhost:3000/shop/payment-result/${id}?paid=${e.value}`;
+      }
+    </script>
+  </body>
+</html>

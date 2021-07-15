@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-
+import { getOrder } from 'redux/actions/admin/order.action'
 
 // UI
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -57,10 +57,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ManageOrder = ({ options: { open, id }, setOptions, order: { order, loading } }) => {
+const ManageOrder = ({ options: { open, id }, setOptions, order: { order, loading }, getOrder }) => {
 
     const theme = useTheme()
     const classes = useStyles()
+
+    useEffect(() => {
+        getOrder(id)
+    }, [id])
 
     const handleClose = () => {
         setOptions({
@@ -112,4 +116,4 @@ const mapStateToProps = ({ admin }) => ({
     order: admin.order
 })
 
-export default connect(mapStateToProps, {})(ManageOrder)
+export default connect(mapStateToProps, { getOrder })(ManageOrder)

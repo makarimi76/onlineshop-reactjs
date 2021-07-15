@@ -1,6 +1,7 @@
 import {
     GET_ORDERS,
     GET_ORDER,
+    UPDATE_ORDER,
     START_ORDER_LOADING,
     ORDER_ERROR
 } from 'redux/actions/admin/types'
@@ -27,7 +28,14 @@ export default function order(state = initialState, action) {
         case GET_ORDER:
             return {
                 ...state,
-                order: payload
+                order: payload,
+                loading: false
+            }
+        case UPDATE_ORDER:
+            return {
+                ...state,
+                order: payload,
+                loading: false
             }
         case START_ORDER_LOADING:
             return {

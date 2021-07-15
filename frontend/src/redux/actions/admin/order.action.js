@@ -1,8 +1,11 @@
 import axiosInstance from 'utils/axios'
+import { jsonToFormData } from 'utils/jsonToFormData'
+import { setAlert } from 'redux/actions/alert.action'
 
 import {
     GET_ORDERS,
     GET_ORDER,
+    UPDATE_ORDER,
     START_ORDER_LOADING,
     ORDER_ERROR
 } from "redux/actions/admin/types"
@@ -38,6 +41,34 @@ export const getOrder = id => async dispatch => {
             type: GET_ORDER,
             payload: res.data
         })
+
+    } catch (err) {
+        dispatch({
+            type: ORDER_ERROR,
+            payload: err
+        })
+    }
+}
+
+// Update Order
+export const updateOrder = (id, formData) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>'
+        }
+    }
+
+    const body = jsonToFormData(formData)
+
+    try {
+        const res = await axiosInstance.patch(`/orders/${id}`, body, config)
+
+        dispatch({
+            type: UPDATE_ORDER,
+            payload: res.data
+        })
+
+        dispatch(setAlert(`سفارش ${res.data.id} بروزرسانی شد`, 'success'))
 
     } catch (err) {
         dispatch({

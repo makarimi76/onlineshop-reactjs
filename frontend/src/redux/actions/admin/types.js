@@ -11,6 +11,7 @@ export const PRODUCT_ERROR = 'PRODUCT_ERROR'
 
 export const GET_ORDERS = 'GET_ORDERS'
 export const GET_ORDER = 'GET_ORDER'
+export const UPDATE_ORDER = 'UPDATE_ORDER'
 export const START_ORDER_LOADING = 'START_ORDER_LOADING'
 export const ORDER_ERROR = 'ORDER_ERROR'
 

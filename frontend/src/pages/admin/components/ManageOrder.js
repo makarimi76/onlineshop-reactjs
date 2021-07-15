@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 // Redux
-import { getOrder } from 'redux/actions/admin/order.action'
+import { getOrder, updateOrder } from 'redux/actions/admin/order.action'
 
 // Components
 import Table from 'components/Table'
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const ManageOrder = ({ options: { open, id }, setOptions, order: { order }, getOrder }) => {
+const ManageOrder = ({ options: { open, id }, setOptions, order: { order }, getOrder, updateOrder }) => {
 
     const theme = useTheme()
     const classes = useStyles()
@@ -95,7 +95,8 @@ const ManageOrder = ({ options: { open, id }, setOptions, order: { order }, getO
     }
 
     const handleSubmit = () => {
-        console.log(1)
+        console.log({ "isDelivery": "true", deliveryTime: new Date().getTime() })
+        updateOrder(id, { "isDelivery": "true", deliveryTime: new Date().getTime() })
     }
 
     return (
@@ -154,14 +155,17 @@ const ManageOrder = ({ options: { open, id }, setOptions, order: { order }, getO
                         <DialogActions className={classes.action} >
                             {order.isDelivery === "true" ?
                                 (
-                                    <Typography variant="subtitle1">این سفارش در تاریخ {order.deliveryTime} تحویل شده است</Typography>
+                                    <Typography variant="subtitle1">تحویل شده است {Date(order.deliveryTime).slice(3, 25)} این سفارش در تاریخ</Typography>
                                 ) :
-                                (
-                                    <Button onClick={handleSubmit} variant="contained" className={classes.button} size="large">
-                                        تحویل شد
-                                    </Button>
-                                )
-                            }
+                                order.isPaid === "false" ?
+                                    (
+                                        <Typography variant="subtitle1" color="error">پرداخت انجام نشده است</Typography>
+                                    ) :
+                                    (
+                                        <Button onClick={handleSubmit} variant="contained" className={classes.button} size="large">
+                                            تحویل شد
+                                        </Button>
+                                    )}
                         </DialogActions>
                     </>
                 }
@@ -175,4 +179,4 @@ const mapStateToProps = ({ admin }) => ({
     order: admin.order
 })
 
-export default connect(mapStateToProps, { getOrder })(ManageOrder)
+export default connect(mapStateToProps, { getOrder, updateOrder })(ManageOrder)

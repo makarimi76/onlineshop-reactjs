@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axiosInstance from 'utils/axios'
 
 import {
     GET_CATEGORIES,
@@ -9,7 +9,7 @@ import {
 // Get Categories
 export const getCategories = () => async dispatch => {
     try {
-        const res = await axios.get('/categories')
+        const res = await axiosInstance.get('/categories')
 
         dispatch({
             type: GET_CATEGORIES,

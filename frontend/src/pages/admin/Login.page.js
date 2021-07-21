@@ -1,8 +1,13 @@
 import { useState } from 'react'
+import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+// Redux
+import { setAlert } from 'redux/actions/alert.action'
+// Components
 import AdminLoginLayout from 'layout/admin/Login.layout'
 
+// UI
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
@@ -25,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const LoginPage = () => {
+const LoginPage = ({ setAlert }) => {
 
     const classes = useStyles()
     let history = useHistory()
@@ -40,8 +45,12 @@ const LoginPage = () => {
 
     const handelSubmit = (e) => {
         e.preventDefault()
-        console.log(loginFormData)
-        history.push('/admin')
+        if (user === "admin" && password === "admin") {
+            setAlert('ورود انجام شد', 'success')
+            history.push('/admin')
+        } else {
+            setAlert('نام کاربری یا رمز عبور اشتباه می باشد', 'error')
+        }
     }
 
     return (
@@ -66,8 +75,10 @@ const LoginPage = () => {
                     value={user}
                     required
                     autoFocus
+                    autoComplete='off'
                 />
                 <TextField
+                    type="password"
                     label="رمز عبور"
                     variant="outlined"
                     color="secondary"
@@ -78,6 +89,7 @@ const LoginPage = () => {
                     onChange={e => handelChange(e)}
                     value={password}
                     required
+                    autoComplete='off'
                 />
                 <Button
                     type="submit"
@@ -93,4 +105,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default connect(null, { setAlert })(LoginPage)
